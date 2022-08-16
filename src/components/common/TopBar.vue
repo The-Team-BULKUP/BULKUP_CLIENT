@@ -1,35 +1,27 @@
 <template id="top-bar">
-    <v-ons-page>
-      <v-ons-toolbar>
+  <v-ons-toolbar>
 
 <!--        <div class="toolbar">-->
-          <div class="toolbar-title"> {{ title }} </div>
-          <img class="toolbar-icon" src="../../assets/img/simple-logo.png" alt="logo">
+      <router-link to="/" class="toolbar-title"> 피티모아 </router-link>
+      <img class="toolbar-icon" src="../../assets/img/simple-logo.png" alt="logo">
 <!--        <div class="right">-->
-          <button class="btn-moa toolbar-btn">크루<br/>찾기</button>
-          <button class="btn-moa toolbar-btn">트레이너<br/>찾기</button>
+      <button class="btn-moa toolbar-btn">크루<br/>찾기</button>
+      <button class="btn-moa toolbar-btn">트레이너<br/>찾기</button>
 <!--        </div>-->
-        <div class="right">
+    <div class="right">
 <!--          <v-ons-toolbar-button icon="ion-ios-menu, material: md-menu"></v-ons-toolbar-button>-->
 <!--          <v-ons-toolbar-button>www</v-ons-toolbar-button>-->
-        </div>
-      </v-ons-toolbar>
+    </div>
+  </v-ons-toolbar>
 
-      <p style="text-align: center">
-        asd
-      </p>
-    </v-ons-page>
+  <p style="text-align: center">
+    asd
+  </p>
 </template>
 
 <script>
 export default {
   name: "TopBar",
-  props:{
-    title: {
-      type: String,
-      default: "피티 모아"
-    }
-  }
 }
 </script>
 
@@ -41,7 +33,9 @@ export default {
 }
 
 .toolbar-title{
-  font-family: 'JejuGothic';
+  color: black;
+  text-decoration: none;
+  font-family: 'Jeju Gothic',sans-serif;
   font-style: normal;
   font-weight: 400;
   font-size: 1.8rem;

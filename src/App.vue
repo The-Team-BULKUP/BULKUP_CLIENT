@@ -1,7 +1,5 @@
 <template>
-
   <router-view></router-view>
-
 </template>
 
 <script>
@@ -15,7 +13,7 @@ export default {
   },
   data() {
     return {
-      title: 'My app'
+      currentPage: 'home',
     };
   }
 }

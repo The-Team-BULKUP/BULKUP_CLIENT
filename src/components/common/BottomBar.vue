@@ -1,30 +1,30 @@
 <template id="bottom-bar">
   <ons-bottom-toolbar class="bottom-bar">
-      <div class="bottom-bar-item">
+      <router-link to="/calendar" class="bottom-bar-item">
         <img class="bottom-bar-icon" src="../../assets/img/icon-cal.png" alt="logo"/>
         <div class="bottom-bar-label">캘린더</div>
 
-      </div>
+      </router-link>
 
-      <div class="bottom-bar-item">
+      <router-link to="/community" class="bottom-bar-item">
         <img class="bottom-bar-icon" src="../../assets/img/icon-commu.png" alt="logo"/><br/>
         <div class="bottom-bar-label">커뮤니티</div>
-      </div>
+      </router-link>
 
-      <div class="bottom-bar-item">
+      <router-link to="/home" class="bottom-bar-item">
         <img class="bottom-bar-icon" src="../../assets/img/icon-home.png" alt="logo"/><br/>
         <div class="bottom-bar-label">홈</div>
-      </div>
+      </router-link>
 
-      <div class="bottom-bar-item">
+      <router-link to="/chat" class="bottom-bar-item">
         <img class="bottom-bar-icon" src="../../assets/img/icon-chat.png" alt="logo"/><br/>
         <div class="bottom-bar-label">채팅</div>
-      </div>
+      </router-link>
 
-      <div class="bottom-bar-item">
+      <router-link to="/mypage" class="bottom-bar-item">
         <img class="bottom-bar-icon" src="../../assets/img/icon-mypage.png" alt="logo"/><br/>
         <div class="bottom-bar-label">마이페이지</div>
-      </div>
+      </router-link>
 
   </ons-bottom-toolbar>
 </template>
@@ -68,9 +68,11 @@ export default {
 }
 
 .bottom-bar-label{
+  color : black;
   font-size: 0.9rem;
   margin-top: 0.2rem;
   font-style: normal;
   font-weight: 400;
+  text-decoration : none;
 }
 </style>

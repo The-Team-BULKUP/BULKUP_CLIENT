@@ -1,6 +1,11 @@
 <template>
-  <TopBar title="피티 모아"></TopBar>
-  <BottomBar title="피티 모아"></BottomBar>
+  <v-ons-pages>
+    <TopBar></TopBar>
+    <div class="content">
+      상단바와 하단바가 필요한 뷰 템플릿 예시
+    </div>
+    <BottomBar></BottomBar>
+  </v-ons-pages>
 </template>
 
 <script>
@@ -9,10 +14,11 @@ import BottomBar from "@/components/common/BottomBar";
 
 export default {
   name: "MainView",
-  components : {
+  components: {
     TopBar,
     BottomBar,
   },
+  props: {}
 }
 </script>
 

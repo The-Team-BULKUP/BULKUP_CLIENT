@@ -60,11 +60,13 @@ export default {
   display: inline-block;
   /* or */
   float: left;
+  text-decoration : none;
 }
 
 .bottom-bar-icon{
   height: 2.4rem;
   width: 2.4rem;
+  text-decoration : none;
 }
 
 .bottom-bar-label{

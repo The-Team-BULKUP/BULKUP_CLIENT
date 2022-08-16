@@ -1,0 +1,74 @@
+@import url(//fonts.googleapis.com/earlyaccess/jejugothic.css);
+
+*
+{
+    /*font-size: 1em !important;*/
+    /*color: #000 !important;*/
+    font-family: Jeju Gothic, sans-serif;
+}
+
+.btn-moa {
+    box-shadow: 3px 4px 0px 0px #b8b8b8;
+    background-color:#abd7f5;
+    border-radius:5px;
+    border:1px solid #c4c4c4;
+    display:inline-block;
+    /*cursor:pointer;*/
+    color:#000000;
+    font-size:1rem;
+    /*font-weight:bold;*/
+    padding: 0.3rem 0.3rem;
+    text-decoration:none;
+    /*text-shadow:0px 1px 0px #528ecc;*/
+}
+.btn-moa:active {
+    text-decoration: none;
+    position:relative;
+    top:1px;
+}
+.btn-moa:hover {
+    text-decoration: none;
+    /*background-color:#abd7f5;*/
+    background-color:#abd7f5;
+}
+/*
+
+.btn-moa:hover,
+.btn-moa:focus,
+.btn-moa:active,
+.btn-moa.active,
+.open .dropdown-toggle.btn-moa {
+    color: #000000;
+    background-color: #93D8F5;
+    border-color: #FFFFFF;
+}
+
+.btn-moa:active,
+.btn-moa.active,
+.open .dropdown-toggle.btn-moa {
+    background-image: none;
+}
+
+.btn-moa.disabled,
+.btn-moa[disabled],
+fieldset[disabled] .btn-moa,
+.btn-moa.disabled:hover,
+.btn-moa[disabled]:hover,
+fieldset[disabled] .btn-moa:hover,
+.btn-moa.disabled:focus,
+.btn-moa[disabled]:focus,
+fieldset[disabled] .btn-moa:focus,
+.btn-moa.disabled:active,
+.btn-moa[disabled]:active,
+fieldset[disabled] .btn-moa:active,
+.btn-moa.disabled.active,
+.btn-moa[disabled].active,
+fieldset[disabled] .btn-moa.active {
+    background-color: #93D8F5;
+    border-color: #FFFFFF;
+}
+
+.btn-moa .badge {
+    color: #93D8F5;
+    background-color: #000000;
+}*/

@@ -7,6 +7,8 @@
 // Webpack CSS import
 import 'onsenui/css/onsenui.css';
 import 'onsenui/css/onsen-css-components.css';
+import './assets/css/global-style.css';
+import './assets/vender/css/bootstrap.min.css';
 
 // JS import
 import { createApp } from 'vue';

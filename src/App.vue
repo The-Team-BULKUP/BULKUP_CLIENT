@@ -1,15 +1,23 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <TopBar title="피티 모아"></TopBar>
+  <BottomBar title="피티 모아"></BottomBar>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+// import HelloWorld from './components/login/HelloWorld.vue'
+import TopBar from "@/components/common/Top";
+import BottomBar from "@/components/common/BottomBar";
 
 export default {
   name: 'App',
   components: {
-    HelloWorld
+    BottomBar,
+    TopBar,
+  },
+  data() {
+    return {
+      title: 'My app'
+    };
   }
 }
 </script>

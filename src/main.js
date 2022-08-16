@@ -18,10 +18,12 @@ import VueOnsen from 'vue-onsenui'; // This imports 'onsenui', so no need to imp
 const app = createApp(App);
 
 import * as components from 'vue-onsenui/esm/components';
+import router from './router';
 
 // Register all vue-onsenui components
 Object.values(components).forEach(component =>
     app.component(component.name, component));
 
 app.use(VueOnsen); // VueOnsen set here as plugin to VUE.
+app.use(router);
 app.mount('#app');

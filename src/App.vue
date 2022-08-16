@@ -1,18 +1,17 @@
 <template>
-  <TopBar title="피티 모아"></TopBar>
-  <BottomBar title="피티 모아"></BottomBar>
+
+  <router-view></router-view>
+
 </template>
 
 <script>
-// import HelloWorld from './components/login/HelloWorld.vue'
-import TopBar from "@/components/common/Top";
-import BottomBar from "@/components/common/BottomBar";
+// import HelloWorld from './components/view/HelloWorld.vue'
 
 export default {
   name: 'App',
   components: {
-    BottomBar,
-    TopBar,
+    // HelloWorld,
+
   },
   data() {
     return {

@@ -19,6 +19,7 @@ const app = createApp(App);
 
 import * as components from 'vue-onsenui/esm/components';
 import router from './router';
+import './registerServiceWorker'
 
 // Register all vue-onsenui components
 Object.values(components).forEach(component =>

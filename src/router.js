@@ -17,7 +17,11 @@ const routes = [
 			},
 			{
 				path: "/community",
-				component: () => import("./view/CommunityView.vue")
+				component: () => import("./view/CommunityView.vue"),
+			},
+			{
+				path: "/community/write",
+				component: () => import("./view/CommunityWriteView.vue"),
 			},
 			{
 				path: "/chat",

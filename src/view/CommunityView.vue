@@ -1,5 +1,32 @@
 <template>
-커뮤니티
+
+
+  <v-ons-list>
+    <v-ons-list-header>커뮤니티</v-ons-list-header>
+    <v-ons-list-item>
+      <div class="board">
+        <div class="title">
+          신발 질문~
+          <a class="info">3분전, 헬스맨님</a>
+        </div>
+        <div class="preview">
+        헬스할 때 신기 좋은 신발 추천 부탁이요
+      </div>
+      </div>
+    </v-ons-list-item>
+  </v-ons-list>
+
+
+  <v-ons-fab
+      class="btn-float"
+      position="bottom right"
+      :visible="fabVisible">
+<!--    todo: edit fabVisible to account is not null-->
+
+    <router-link to="/community/write">
+    <v-ons-icon style="color:black;" icon="fa-pencil"></v-ons-icon>
+    </router-link>
+  </v-ons-fab>
 </template>
 
 <script>
@@ -15,5 +42,31 @@ export default {
 </script>
 
 <style scoped>
+
+.board {
+  padding-left: 0.8rem;
+}
+
+.board .title{
+  font-size: 1.3rem;
+}
+
+.board .title .info{
+  font-size: 0.866rem;
+  color: #999;
+  vertical-align: text-bottom;
+}
+
+.board .preview{
+  margin-top: 0.5rem;
+  margin-left: 1.35rem;
+}
+
+.btn-float {
+  margin-bottom: 5.8rem;
+  background-color: #EEEEEE;
+  color: black;
+}
+
 
 </style>

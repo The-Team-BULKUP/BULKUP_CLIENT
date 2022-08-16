@@ -3,7 +3,7 @@
       <v-ons-toolbar>
 
 <!--        <div class="toolbar">-->
-          <div class="toobar-title"> {{ title }} </div>
+          <div class="toolbar-title"> {{ title }} </div>
           <img class="toolbar-icon" src="../../assets/img/simple-logo.png" alt="logo">
 <!--        <div class="right">-->
           <button class="btn-moa toolbar-btn">크루<br/>찾기</button>
@@ -40,7 +40,7 @@ export default {
   padding-left: 0.8rem;
 }
 
-.toobar-title{
+.toolbar-title{
   font-family: 'JejuGothic';
   font-style: normal;
   font-weight: 400;

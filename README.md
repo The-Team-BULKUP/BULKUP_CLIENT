@@ -1,4 +1,4 @@
-# pt-moa-web-client
+# pt-moa-client
 
 ## Project setup
 ```

@@ -1,10 +1,25 @@
-import Vue from 'vue'
-import App from './App.vue'
-import vuetify from './plugins/vuetify'
+// import { createApp } from 'vue'
+// import App from './App.vue'
+//
+// createApp(App).mount('#app')
 
-Vue.config.productionTip = false
 
-new Vue({
-  vuetify,
-  render: h => h(App)
-}).$mount('#app')
+// Webpack CSS import
+import 'onsenui/css/onsenui.css';
+import 'onsenui/css/onsen-css-components.css';
+
+// JS import
+import { createApp } from 'vue';
+import App from './App.vue';
+import VueOnsen from 'vue-onsenui'; // This imports 'onsenui', so no need to import it separately
+
+const app = createApp(App);
+
+import * as components from 'vue-onsenui/esm/components';
+
+// Register all vue-onsenui components
+Object.values(components).forEach(component =>
+    app.component(component.name, component));
+
+app.use(VueOnsen); // VueOnsen set here as plugin to VUE.
+app.mount('#app');

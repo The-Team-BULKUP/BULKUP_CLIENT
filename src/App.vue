@@ -1,12 +1,27 @@
 <template>
-  <router-view></router-view>
+    <SplashScreen v-if="isLoading"></SplashScreen>
+    <router-view v-if="!isLoading"></router-view>
+<!--  </v-ons-pages>-->
 </template>
 
 <script>
 
+import SplashScreen from "@/components/common/SplashScreen";
+
 export default {
   name: 'App',
   components: {
+    SplashScreen
+  },
+  data () {
+    return {
+      isLoading: true
+    }
+  },
+  mounted() {
+    setTimeout(() => {
+      this.isLoading = false;
+    }, 1500);
   },
 }
 </script>

@@ -1,5 +1,5 @@
 <template>
-  <v-ons-pages>
+<!--  <v-ons-pages>-->
 
     <v-ons-splitter>
       <v-ons-splitter-side
@@ -25,12 +25,12 @@
     </v-ons-splitter>
 
     <TopBar @toggle="toggleSideMenu"></TopBar>
-    <div :class="[openSide ? 'content-hide' : 'content']">
+    <div :class="[openSide ? 'content-hide' : 'content']" style="padding-top: 0.8rem">
 <!--      todo: 로그인 안했을때 로그인/회원가입 권장 컨텐츠 띄우게 -hun-->
       <router-view></router-view>
     </div>
     <BottomBar @offSide="offSideMenu" :current-page="currentPage"></BottomBar>
-  </v-ons-pages>
+<!--  </v-ons-pages>-->
 </template>
 
 <script>

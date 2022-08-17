@@ -1,7 +1,7 @@
 <template>
 
 
-  <v-ons-list style="padding-top: 0.8rem">
+  <v-ons-list>
     <v-ons-list-item>
       <div class="board">
         <div class="title">

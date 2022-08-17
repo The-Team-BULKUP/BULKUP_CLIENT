@@ -1,12 +1,12 @@
 {
     "theme_color": "#abd7f5",
     "background_color": "#abd7f5",
-    "display": "fullscreen",
+    "display": "standalone",
     "scope": "/",
     "start_url": "/",
     "id": "/",
     "name": "pt_moa",
-    "short_name": "ptmoa",
+    "short_name": "피티모아",
     "description": "this app is pt moa",
     "icons": [
         {

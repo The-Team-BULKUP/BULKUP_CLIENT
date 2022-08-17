@@ -1,8 +1,7 @@
 <template>
 
 
-  <v-ons-list>
-    <v-ons-list-header>커뮤니티</v-ons-list-header>
+  <v-ons-list style="padding-top: 0.8rem">
     <v-ons-list-item>
       <div class="board">
         <div class="title">
@@ -19,8 +18,8 @@
 
   <v-ons-fab
       class="btn-float"
-      position="bottom right"
-      :visible="fabVisible">
+      position="bottom right">
+<!--      :visible="fabVisible">-->
 <!--    todo: edit fabVisible to account is not null-->
 
     <router-link to="/community/write">
@@ -63,8 +62,8 @@ export default {
 }
 
 .btn-float {
-  margin-bottom: 5.8rem;
-  background-color: #EEEEEE;
+  margin-bottom: 4.5rem;
+  background-color: rgb(250,250,250);
   color: black;
 }
 

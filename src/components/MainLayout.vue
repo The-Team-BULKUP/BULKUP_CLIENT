@@ -1,11 +1,35 @@
 <template>
   <v-ons-pages>
-    <TopBar></TopBar>
-    <div class="content">
+
+    <v-ons-splitter>
+      <v-ons-splitter-side
+          class="side"
+          swipeable width="100%" collapse="" side="left"
+          v-model:open="getOpenSide">
+
+        <v-ons-list>
+          <v-ons-list-item
+              tappable modifier="chevron"
+              @click="openSide = false">
+            <div class="center">크루 찾기</div>
+          </v-ons-list-item>
+
+          <v-ons-list-item
+              tappable modifier="chevron"
+              @click="openSide = false">
+            <div class="center">트레이너 찾기</div>
+          </v-ons-list-item>
+        </v-ons-list>
+
+      </v-ons-splitter-side>
+    </v-ons-splitter>
+
+    <TopBar @toggle="toggleSideMenu"></TopBar>
+    <div :class="[openSide ? 'content-hide' : 'content']">
 <!--      todo: 로그인 안했을때 로그인/회원가입 권장 컨텐츠 띄우게 -hun-->
       <router-view></router-view>
     </div>
-    <BottomBar></BottomBar>
+    <BottomBar @offSide="offSideMenu" :current-page="currentPage"></BottomBar>
   </v-ons-pages>
 </template>
 
@@ -19,11 +43,44 @@ export default {
     TopBar,
     BottomBar,
   },
-  props: {
+  data() {
+    return {
+      currentPage: 'home',
+      openSide: false
+    };
+  },
+  methods: {
+    toggleSideMenu() {
+      console.log("toggleSideMenu2");
+      this.openSide = !this.openSide;
+    },
+    offSideMenu() {
+      this.openSide = false;
+    }
+  },
+  computed: {
+    getOpenSide: function () {
+      return this.openSide;
+    }
+  },
+  watch: {
+    $route(to, from) {
+      if (to.path != from.path) {
+        /* router path가 변경될 때마다 서버로 접근로그를 저장한다. */
+        console.log(to.path.replace("/", ""));
+        this.currentPage = to.path;
+      }
+    }
   }
 }
 </script>
 
 <style scoped>
+.side {
+  margin-top:4rem;
+}
 
+.content-hide{
+  display: none;
+}
 </style>

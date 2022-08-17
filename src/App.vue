@@ -3,19 +3,11 @@
 </template>
 
 <script>
-// import HelloWorld from './components/view/HelloWorld.vue'
 
 export default {
   name: 'App',
   components: {
-    // HelloWorld,
-
   },
-  data() {
-    return {
-      currentPage: 'home',
-    };
-  }
 }
 </script>
 

@@ -16,10 +16,12 @@ import App from './App.vue';
 import VueOnsen from 'vue-onsenui'; // This imports 'onsenui', so no need to import it separately
 
 const app = createApp(App);
+app.config.globalProperties.Auth = Auth;
 
 import * as components from 'vue-onsenui/esm/components';
 import router from './router';
 import './registerServiceWorker'
+import Auth from "@/api/store/auth";
 
 // Register all vue-onsenui components
 Object.values(components).forEach(component =>

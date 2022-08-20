@@ -19,6 +19,12 @@
               @click="openSide = false">
             <div class="center">트레이너 찾기</div>
           </v-ons-list-item>
+
+          <v-ons-list-item v-if="this.Auth.getters.isLogin === true"
+              tappable modifier="chevron"
+              @click="logout">
+            <div class="center">로그아웃</div>
+          </v-ons-list-item>
         </v-ons-list>
 
       </v-ons-splitter-side>
@@ -26,7 +32,6 @@
 
     <TopBar @toggle="toggleSideMenu"></TopBar>
     <div :class="[openSide ? 'content-hide' : 'content']" style="padding-top: 0.8rem">
-<!--      todo: 로그인 안했을때 로그인/회원가입 권장 컨텐츠 띄우게 -hun-->
       <router-view></router-view>
     </div>
     <BottomBar @offSide="offSideMenu" :current-page="currentPage"></BottomBar>
@@ -56,7 +61,14 @@ export default {
     },
     offSideMenu() {
       this.openSide = false;
-    }
+    },
+    logout() {
+      this.openSide = false;
+      this.Auth.dispatch("doLogout").then(() => {
+        this.$router.go(-1);
+        this.openSide = true;
+      });
+    },
   },
   computed: {
     getOpenSide: function () {

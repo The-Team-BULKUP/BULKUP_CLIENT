@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { setInterceptors } from './common/interceptors';
+import { setInterceptors } from './interceptors';
 import loginStore from "@/api/store/auth";
 import Auth from "@/api/store/auth";
 export const HOST = process.env["API_HOST"] || "http://localhost:8080/api/v1";
@@ -27,9 +27,9 @@ export function createInstanceWithAuth(url) { // Token값과 특정 url을 붙�
 
 export function tokenReissue(){
     console.log("토큰을 재발급합니다.");
-    Auth.dispatch("doReissue").then(r => console.log("토큰 재발행 완료"));
+    Auth.dispatch("doReissue").then(() => console.log("토큰 재발행 완료"));
 }
 
-export const instance = createInstance();
+// export const instance = createInstance();
+export const accountAxios = createInstanceWithAuth('/signup');
 
-// export const problemAxios = createInstanceWithAuth('/problem');

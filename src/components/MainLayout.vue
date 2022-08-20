@@ -31,7 +31,7 @@
     </v-ons-splitter>
 
     <TopBar @toggle="toggleSideMenu"></TopBar>
-    <div :class="[openSide ? 'content-hide' : 'content']" style="padding-top: 0.8rem">
+    <div :class="[openSide ? 'content-hide' : 'content']" style="padding-top: 0.8rem;">
       <router-view></router-view>
     </div>
     <BottomBar @offSide="offSideMenu" :current-page="currentPage"></BottomBar>

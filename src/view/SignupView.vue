@@ -1,6 +1,6 @@
 <template>
   <!-- Login Template -->
-  <div class="page__content" style="top: 3.9rem !important; padding-top: 0; bottom: 4.3rem !important;">
+  <div class="page__content" style="top: 4.5rem !important; padding-top: 0; bottom: 4.3rem !important;">
       <ons-card>
         <ons-card-content>
           <div class="card-content">

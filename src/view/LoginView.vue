@@ -1,5 +1,6 @@
 <template>
   <!-- Login Template -->
+    <div class="padding-content">
       <ons-card>
         <ons-card-content>
           <div class="card-content">
@@ -24,6 +25,7 @@
           </div>
         </ons-card-content>
       </ons-card>
+    </div>
 </template>
 
 <script>

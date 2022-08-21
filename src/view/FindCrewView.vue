@@ -1,10 +1,10 @@
 <template>
-  <div class="map">
+  <div :class="isLoaded ? 'map' : 'map padding-content' ">
     <div id="map">
-      <div style="horiz-align: center">
-        로딩중입니다<br/>
-        잠시만 기다려주세요!<br/><br/>
-        <v-ons-progress-circular indeterminate></v-ons-progress-circular>
+        <div v-if="!isLoaded" style="horiz-align: center">
+          로딩중입니다<br/>
+          잠시만 기다려주세요!<br/><br/>
+          <v-ons-progress-circular indeterminate></v-ons-progress-circular>
       </div>
     </div>
     <div class="distance-div" v-if="isLoaded" style="background: #e8e7e7">
@@ -34,7 +34,11 @@
           <span class="list-item__subtitle">{{ '1회당 ' + party.preferredPrice + '원 - 총 ' + party.preferredHowMany + ' 회'}}</span>
         </div>
         <div class="right">
-          <span class="list-item__subtitle">{{ party.distance.toFixed() }}m</span>
+          <v-ons-col style="text-align: -webkit-center;">
+            <v-ons-button style="display: inline;" @click="showPartyDetail(party)" modifier="quiet" class="button button--quiet">자세히</v-ons-button>
+<!--          <button class="btn-moa toolbar-btn backcolor-1" @click="findCrew(party)">자세히보기</button>-->
+          <span class="list-item__subtitle">{{ party.distance.toFixed() }}m</span><br/>
+          </v-ons-col>
         </div>
       </v-ons-list-item>
     </v-ons-list>
@@ -81,87 +85,70 @@ export default {
   watch: {
     'myLocation.distance' : function(){
       console.info("changed and reload");
+      let center = this.map.getCenter();
+      if (this.myLocation.distance === 500) {
+        this.map.setLevel(4, {anchor: center, animate: true});
+      } else if (this.myLocation.distance === 1000) {
+        this.map.setLevel(5, {anchor: center, animate: true});
+      } else if (this.myLocation.distance === 2000) {
+        this.map.setLevel(6, {anchor: center, animate: true});
+      } else if (this.myLocation.distance === 3000) {
+        this.map.setLevel(8, {anchor: center, animate: true});
+      }
+      this.map.setCenter(new window.kakao.maps.LatLng(this.myLocation.lat, this.myLocation.lng));
       this.loadPartyCrew();
+      this.map.relayout();
     },
   },
-  mounted: function () {
+  mounted: function (){
     LocationUtils.getLocation().then(res => {
       this.myLocation.lat = res.coords.latitude;
       this.myLocation.lng = res.coords.longitude;
-      console.info(this.myLocation);
-
-      if (window.kakao && window.kakao.maps) {
-        this.initMap();
-      } else {
-        const script = document.createElement("script");
-        /* global kakao */
-        script.onload = () => kakao.maps.load(this.initMap);
-        script.src =
-            "//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=45488c69203b6e44b4dbd0576c8b6d56";
-        document.head.appendChild(script);
-      }
+      LocationUtils.initMap(this);
       this.loadPartyCrew();
     });
   },
   methods: {
-    initMap() {
-      const container = document.getElementById("map");
-      const options = {
-        center: new kakao.maps.LatLng(this.myLocation.lat, this.myLocation.lng),
-        level: 6
-      };
-      this.map = new kakao.maps.Map(container, options);
-    },
     loadPartyCrew() {
       Party.fetchPartycrew(this.myLocation.lat, this.myLocation.lng, this.myLocation.distance).then(res => {
         if (res.status !== 200){
           $ons.notification.alert(res.data['detail']);
         } else {
           this.partyCrew = res.data;
-          this.displayMarker(this.partyCrew.map(party => { return {lat: party.point.lat, lng: party.point.lng, name: party.name}}));
+          LocationUtils.displayMarker(this, this.markers, this.partyCrew.map(party => { return {lat: party.point.lat, lng: party.point.lng, name: party.name}}));
         }
         this.isLoaded = true;
       })
     },
 
-    displayMarker(markerPositions) {
-      if (this.markers.length > 0) {
-        // this.markers.forEach((marker) => marker.setMap(null));
-        this.markers.forEach((marker) => marker.close());
-      }
+    initMapFinally() {
+      console.info("callback initMapFinally");
+      console.info(this.myLocation);
+      let mapContainer = document.getElementById('map'), // 지도를 표시할 div
+          position = new window.kakao.maps.LatLng(this.myLocation.lat, this.myLocation.lng),
+          mapOption = {
+            center: position, // 지도의 중심좌표
+            draggable: true,
+            scrollwheel: true,
+            zoomable: true,
+            level: 4 // 지도의 확대 레벨
+          };
 
-      if (markerPositions.length > 0) {
-        this.markers = markerPositions.map(
-            (position) => {
-              const iwContent = `<div class="marker">${position.name}</div>`, // 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
-                    iwPosition = new kakao.maps.LatLng(position.lat, position.lng), //인포윈도우 표시 위치입니다
-                    iwRemoveable = false; // removeable 속성을 ture 로 설정하면 인포윈도우를 닫을 수 있는 x버튼이 표시됩니다
+      this.map = new window.kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
+      this.map.relayout();
 
-              new kakao.maps.InfoWindow({
-                map: this.map,
-                position : iwPosition,
-                content : iwContent,
-                removable : iwRemoveable
-              })
-            })
-      // if (markerPositions.length > 0) {
-      //   this.markers = markerPositions.map(
-      //       (position) =>
-      //           new kakao.maps.Marker({
-      //             map: this.map,
-      //             title: position.title,
-      //             position: new kakao.maps.LatLng(position.lat, position.lng),
-      //           }))
-      //
-
-      }
-        //
-        // const bounds = positions.reduce(
-        //     (bounds, latlng) => bounds.extend(latlng),
-        //     new kakao.maps.LatLngBounds()
-        // );
-        //
-        // this.map.setBounds(bounds);
+      this.isLoaded = true;
+      this.map.setDraggable(true);
+      this.map.setZoomable(true);
+    },
+    showPartyDetail(party) {
+      // this.$router.push({
+      //   name: "PartyDetailView",
+      //   params: {
+      //     party: party,
+      //   }
+      // });
+      alert(party);
     },
 
     toDay(week){

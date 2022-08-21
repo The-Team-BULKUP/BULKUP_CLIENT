@@ -16,6 +16,14 @@
             </v-ons-list-item>
           </router-link>
 
+          <router-link to="/createPartyView">
+            <v-ons-list-item
+                tappable modifier="chevron"
+                @click="openSide = false">
+              <div class="center">크루 모집</div>
+            </v-ons-list-item>
+          </router-link>
+
           <router-link to="/findTrainer">
             <v-ons-list-item
                 tappable modifier="chevron"
@@ -53,7 +61,8 @@
     </v-ons-splitter>
 
     <TopBar @toggle="toggleSideMenu"></TopBar>
-    <div :class="[openSide ? 'content-hide' : 'content']" style="padding-top: 0.8rem;">
+    <div :class="[openSide ? 'content-hide' : 'content']">
+<!--    <div :class="[openSide ? 'content-hide' : 'content']" style="padding-top: 0.8rem;">-->
       <router-view></router-view>
     </div>
     <BottomBar @offSide="offSideMenu" :current-page="currentPage"></BottomBar>

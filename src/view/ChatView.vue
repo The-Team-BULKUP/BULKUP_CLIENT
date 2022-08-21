@@ -1,5 +1,7 @@
 <template>
-채팅
+  <div class="padding-content">
+  채팅
+  </div>
 </template>
 
 <script>

@@ -1,6 +1,6 @@
 <template>
-    <SplashScreen v-if="isLoading"></SplashScreen>
-    <router-view v-if="!isLoading"></router-view>
+    <SplashScreen v-show="isLoading" style="z-index: 99999999"></SplashScreen>
+    <router-view></router-view>
 <!--  </v-ons-pages>-->
 </template>
 

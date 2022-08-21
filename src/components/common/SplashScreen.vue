@@ -128,12 +128,16 @@ export default {
   horiz-align: center;
   align-content: center;
   text-align: center;
-  width: 15rem;
-  height: 15rem;
+  width: 18rem;
+  height: 18rem;
   z-index: 9999;
 }
 
 splash-body{
+  position: absolute;
+  top: 0;
+  left:0;
+  bottom: 0;
   background-color: #fafafa;
   width: 100%;
   height: 100%;

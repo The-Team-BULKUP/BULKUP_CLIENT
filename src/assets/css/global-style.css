@@ -67,3 +67,7 @@
 .content .map #map div{
     display: contents;
 }
+
+.padding-content{
+    padding-top: 0.8rem;
+}

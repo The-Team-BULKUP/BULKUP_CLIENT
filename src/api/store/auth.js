@@ -10,13 +10,24 @@ export const loginStore = new Vuex.Store({
         accessToken: '',
         refreshToken: '',
         tokenExpired: '',
+        realName: '',
+        role: '',
     },
     getters: {
         isLogin(state) {
             return (state.accessToken !== '' && state.refreshToken !== '');
         },
+        isUser(state) {
+            return (state.role === 'USER');
+        },
+        isTrainer(state) {
+            return (state.role === 'TRAINER');
+        },
         tokenExpired(state) {
             return state.tokenExpired;
+        },
+        realName(state) {
+            return state.realName;
         }
     },
     mutations: {
@@ -32,12 +43,18 @@ export const loginStore = new Vuex.Store({
         setTokenExpired(state, tokenExpired){
             state.tokenExpired = tokenExpired;
         },
+        setRealName(state, realName) {
+            state.realName = realName;
+        },
+        setRole(state, role) {
+            state.role = role;
+        },
         // 초기화시킵니다.
         reset(state) {
-            state.username = '';
             state.accessToken = '';
             state.refreshToken = '';
             state.tokenExpired = '';
+            state.realName = '';
         }
     },
     actions: {
@@ -55,6 +72,8 @@ export const loginStore = new Vuex.Store({
                     commit('setAccessToken', res.data.token);
                     commit('setRefreshToken', res.data.refresh);
                     commit('setTokenExpired', res.data.tokenExpired);
+                    commit('setRealName', res.data.realName);
+                    commit('setRole', res.data.role);
                     result = true;
                 } else {
                     console.log("로그인되지 않았습니다.");
@@ -93,6 +112,8 @@ export const loginStore = new Vuex.Store({
                     commit('setAccessToken', res.data.token);
                     commit('setRefreshToken', res.data.refresh);
                     commit('setTokenExpired', res.data.tokenExpired);
+                    commit('setRealName', res.data.realName);
+                    commit('setRole', res.data.role);
                     result = true;
                 } else {
                     console.log("재발행 오류");
@@ -116,7 +137,6 @@ export const loginStore = new Vuex.Store({
             });
         },
 
-
         // 로그아웃합니다.
         doLogout({commit}) {
             commit('reset');
@@ -124,6 +144,9 @@ export const loginStore = new Vuex.Store({
         }
     },
     computed : {
+
+    },
+    methods: {
 
     },
     plugins : [

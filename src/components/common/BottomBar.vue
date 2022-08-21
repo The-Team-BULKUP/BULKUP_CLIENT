@@ -11,7 +11,7 @@
       <div class="bottom-bar-label">게시판</div>
     </router-link>
 
-      <router-link to="/home" class="bottom-bar-item">
+      <router-link to="/" class="bottom-bar-item">
         <img :class="[getCurrentPage === 'home' ? 'bottom-bar-icon-clicked' : 'bottom-bar-icon']" src="../../assets/img/icon-home.png" alt="logo"/><br/>
         <div class="bottom-bar-label">홈</div>
       </router-link>

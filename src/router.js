@@ -46,11 +46,17 @@ const routes = [
 				component: () => import("./view/LoginView.vue")
 			},
 			{
+				path: "/findCrew",
+				name: "FindCrew",
+				meta: {authRequired: true},
+				component: () => import("./view/FindCrewView.vue")
+			},
+			{
 				path: "/signup",
 				name: "Signup",
 				meta: {authRequired: false},
 				component: () => import("./view/SignupView.vue")
-			}
+			},
 		]
 	},
 ]

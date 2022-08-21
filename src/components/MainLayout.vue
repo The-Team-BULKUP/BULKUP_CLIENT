@@ -7,24 +7,46 @@
           swipeable width="100%" collapse="" side="left"
           v-model:open="getOpenSide">
 
-        <v-ons-list>
-          <v-ons-list-item
-              tappable modifier="chevron"
-              @click="openSide = false">
-            <div class="center">크루 찾기</div>
-          </v-ons-list-item>
+        <v-ons-list v-if="this.Auth.getters.isLogin === true">
+          <router-link to="/findCrew">
+            <v-ons-list-item
+                tappable modifier="chevron"
+                @click="openSide = false">
+              <div class="center">크루 찾기</div>
+            </v-ons-list-item>
+          </router-link>
+
+          <router-link to="/findTrainer">
+            <v-ons-list-item
+                tappable modifier="chevron"
+                @click="openSide = false">
+              <div class="center">트레이너 찾기</div>
+            </v-ons-list-item>
+          </router-link>
 
           <v-ons-list-item
-              tappable modifier="chevron"
-              @click="openSide = false">
-            <div class="center">트레이너 찾기</div>
-          </v-ons-list-item>
-
-          <v-ons-list-item v-if="this.Auth.getters.isLogin === true"
               tappable modifier="chevron"
               @click="logout">
             <div class="center">로그아웃</div>
           </v-ons-list-item>
+        </v-ons-list>
+
+        <v-ons-list v-else>
+          <router-link to="/login">
+            <v-ons-list-item
+                tappable modifier="chevron"
+                @click="openSide = false">
+              <div class="center">로그인</div>
+            </v-ons-list-item>
+          </router-link>
+
+          <router-link to="/signup">
+            <v-ons-list-item
+                tappable modifier="chevron"
+                @click="openSide = false">
+              <div class="center">회원가입</div>
+            </v-ons-list-item>
+          </router-link>
         </v-ons-list>
 
       </v-ons-splitter-side>
@@ -52,11 +74,10 @@ export default {
     return {
       currentPage: 'home',
       openSide: false
-    };
+    }
   },
   methods: {
     toggleSideMenu() {
-      console.log("toggleSideMenu2");
       this.openSide = !this.openSide;
     },
     offSideMenu() {

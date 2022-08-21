@@ -173,7 +173,6 @@ export default {
           }
         });
       }
-
     },
     serachEvent() {
       Dagym.fetchGymListByName(this.search.name).then(res => {

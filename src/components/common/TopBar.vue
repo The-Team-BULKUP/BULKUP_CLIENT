@@ -37,7 +37,6 @@ export default {
   },
   methods: {
     toggleSideMenu() {
-      console.log("toggleSideMenu");
       this.$emit('toggle');
     }
   }

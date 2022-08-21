@@ -16,26 +16,31 @@ const routes = [
 			},
 			{
 				path: "/calendar",
+				name: "Calendar",
 				meta: {authRequired: true},
 				component: () => import("./view/CalendarView.vue")
 			},
 			{
 				path: "/community",
+				name: "Community",
 				meta: {authRequired: true},
 				component: () => import("./view/CommunityView.vue"),
 			},
 			{
 				path: "/community/write",
+				name: "Write",
 				meta: {authRequired: true},
 				component: () => import("./view/CommunityWriteView.vue"),
 			},
 			{
 				path: "/chat",
+				name: "Chat",
 				meta: {authRequired: true},
 				component: () => import("./view/ChatView.vue")
 			},
 			{
 				path: "/mypage",
+				name: "Mypage",
 				meta: {authRequired: true},
 				component: () => import("./view/MyPageView.vue")
 			},
@@ -57,6 +62,12 @@ const routes = [
 				meta: {authRequired: false},
 				component: () => import("./view/SignupView.vue")
 			},
+			{
+				path: "/createPartyView",
+				name: "CreatePartyView",
+				meta: {authRequired: true},
+				component: () => import("./view/CreatePartyView.vue")
+			}
 		]
 	},
 ]

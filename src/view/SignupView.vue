@@ -36,10 +36,30 @@
                   <label for="phone">핸드폰번호</label>
                   <input type="text" id="phone" class="form-control" v-model="signup.phone" placeholder="핸드폰 번호를 입력하세요.">
                 </div>
-                <hr/>
                 <div class="form-group" v-if="!isUserType">
+                  <hr/>
+                  <label for="formFile" class="form-label">신분증 확인</label>
+                  <input class="form-control" type="file" id="formFile" @change="idFileChange">
+                  <div class="small" style="padding: 0.3rem 1rem">
+                    1. 신분증을 꺼내 개인 정보를 가립니다.<br/>
+                    2. 신분증을 근접 촬영합니다.<br/>
+                    3. 이름, 생년월일, 사진 식별 가능여부를 확인합니다.<br/>
+                    4. 업로드를 합니다.
+                  </div>
+                </div>
+                <div class="form-group" v-if="!isUserType">
+                  <label for="formFile" class="form-label">경력증명서 확인</label>
+                    <input class="form-control" type="file" id="formFile" @change="careerFileChange">
+                </div>
+                <div class="form-group" v-if="!isUserType">
+                  <label for="formFile" class="form-label">프로필 사진</label>
+                  <input class="form-control" type="file" id="formFile" @change="profileFileChange">
+                </div>
+<!--                  <input type="text" id="price_per" class="form-control" v-model="signup.price_per" placeholder="회당 비용을 입력해주세요.">-->
+                <div class="form-group" v-if="!isUserType">
+                  <hr/>
                   <label for="price_per">회당 비용</label>
-                  <input type="text" id="price_per" class="form-control" v-model="signup.price_per" placeholder="회당 비용을 입력해주세요.">
+                  <input type="text" id="price_per" class="form-control" v-model="signup.pricePer" placeholder="회당 비용을 입력해주세요.">
                 </div>
                 <div class="form-group" v-if="!isUserType">
                   <label for="gym">소속 헬스장</label>
@@ -53,7 +73,7 @@
                     <v-ons-list-item>
                       <div class="center">
 
-                          <v-ons-select v-if="search.gymList !== undefined" v-model="signup.gym_code">
+                          <v-ons-select v-if="search.gymList !== undefined" v-model="signup.gymCode">
                           <option v-for="(gym, index) in search.gymList" :key="gym" :value="gym._id" :selected="index === 0">
                             {{ gym.gymName + " (" + gym.address + ")" }}
                             <!--                            {{ item.text }}-->
@@ -64,7 +84,11 @@
                     </v-ons-list-item>
                   </v-ons-list>
                 </div>
-                <hr/>
+                <div class="form-group" >
+                  <hr/>
+                  <div><label for="introduce">자기소개</label></div>
+                <textarea  id="introduce" class="textarea" style="width:100%" rows="2" placeholder="간단히 본인을 소개해주세요!" v-model="signup.introduce" required></textarea>
+                  </div>
                 <div class="form-group">
                   <button type="button" class="btn btn-primary" @click="signupEvent">회원가입</button>
                     <a ref="pw_watch" style="float:right;padding-top: 0.4rem;color: black;text-underline: none"></a>
@@ -89,13 +113,21 @@ export default {
       signup: {
         username: "",
         nickname: "",
-        password: "",
-        password_check: "",
+        password: "Test1234!!",
+        password_check: "Test1234!!",
         realName: "",
         phone: "",
         type: "",
-        price_per: "",
-        gym_code: ""
+        pricePer: "",
+        gymCode: "",
+        profileImg: undefined,
+        idCardImg: undefined,
+        careerProofImg: undefined,
+        gymLat : Number,
+        gymLng : Number,
+        introduce : "열심히하겠읍니다",
+        gymName : "",
+        gymPhotoSmall : "",
       },
 
       search: {
@@ -111,16 +143,76 @@ export default {
       } else {
         this.$refs.pw_watch.innerHTML = "";
       }
+    },
+    'signup.gymCode': function() {
+      if (this.signup.gymCode !== "") {
+        this.search.gymList.map(gym => {
+          if (gym._id === this.signup.gymCode) {
+            this.signup.gymLat = gym.latitude;
+            this.signup.gymLng = gym.longitude;
+            this.signup.gymName = gym.gymName;
+            this.signup.gymPhotoSmall = gym.gymPhotoSmall;
+          }
+        });
+      }
     }
   },
   methods:{
+    profileFileChange(e) {
+      let file = e.target.files[0];
+      let name = file.name;
+      this.file_name = file.name;
+      this.file = file;
+      if(name.endsWith('.jpg') || name.endsWith('.jpeg') ||
+          name.endsWith('.png')){
+        this.img_src = URL.createObjectURL(file);
+        this.signup.profileImg = file;
+      }
+      else {
+        $ons.notification.alert("이미지 파일만 업로드 가능합니다.");
+        this.img_src = "";
+        this.file = "";
+      }
+    },
+    idFileChange(e) {
+      let file = e.target.files[0];
+      let name = file.name;
+      this.file_name = file.name;
+      this.file = file;
+      if(name.endsWith('.jpg') || name.endsWith('.jpeg') ||
+          name.endsWith('.png')){
+        this.img_src = URL.createObjectURL(file);
+        this.signup.idCardImg = file;
+      }
+      else {
+        $ons.notification.alert("이미지 파일만 업로드 가능합니다.");
+        this.img_src = "";
+        this.file = "";
+      }
+    },
+    careerFileChange(e){
+      let file = e.target.files[0];
+      let name = file.name;
+      this.file_name = file.name;
+      this.file = file;
+      if(name.endsWith('.jpg') || name.endsWith('.jpeg') ||
+          name.endsWith('.png')){
+        this.img_src = URL.createObjectURL(file);
+        this.signup.careerProofImg = file;
+      }
+      else {
+        $ons.notification.alert("이미지 파일만 업로드 가능합니다.");
+        this.img_src = "";
+        this.file = "";
+      }
+    },
     signupEvent() {
-      if (this.signup.realName == null){
+      if (this.signup.realName === ""){
         $ons.notification.alert("이름을 입력해주세요.");
         return false;
       }
 
-      if (this.signup.username == null){
+      if (this.signup.username === ""){
         $ons.notification.alert("아이디를 입력해주세요.");
         return false;
       }
@@ -130,17 +222,27 @@ export default {
         return false;
       }
 
-      if (!this.isUserType && this.signup.gym_code == null){
+      if (!this.isUserType && this.signup.gymCode === ""){
         $ons.notification.alert("소속 헬스장을 선택해주세요.");
         return false;
       }
 
-      if (this.isUserType && this.signup.nickname == null){
+      if (!this.isUserType && this.signup.pricePer === ""){
+        $ons.notification.alert("회당 가격을 입력해주세요.");
+        return false;
+      }
+
+      if (!this.isUserType && !this.uploadedFile){
+        $ons.notification.alert("관련 사진을 업로드해주세요.");
+        return false;
+      }
+
+      if (this.isUserType && this.signup.nickname === ""){
         $ons.notification.alert("닉네임을 입력해주세요.");
         return false;
       }
 
-      if (this.signup.phone == null){
+      if (this.signup.phone === ""){
         $ons.notification.alert("핸드폰 번호를 입력해주세요.");
         return false;
       }
@@ -153,24 +255,34 @@ export default {
             $ons.notification.alert("가입이 완료되었습니다.");
             this.$router.push("/login");
           } else {
-            if (res.data['detail'] == null)
+            if (res.data.detail == null)
               $ons.notification.alert("가입에 실패하였습니다.");
             else
-              $ons.notification.alert(res.data['detail']);
+              $ons.notification.alert(res.data.detail);
           }
+        }).catch(err => {
+          if (err.response.data.fieldErrors == null)
+            $ons.notification.alert(err.response.data.message);
+          else
+            $ons.notification.alert(err.response.data.fieldErrors[0].defaultMessage);
         });
       } else {
         // 트레이너 가입
         Account.makeTrainerAccount(this.signup).then(res => {
           if (res.status === 201) {
-            $ons.notification.alert("가입이 완료되었습니다.");
+            $ons.notification.alert("가입이 완료되었습니다. 승인까지 영업일 기준 약 1~2일 소요됩니다.");
             this.$router.push("/login");
           } else {
-            if (res.data['detail'] == null)
+            if (res.data.detail == null)
               $ons.notification.alert("가입에 실패하였습니다.");
             else
-              $ons.notification.alert(res.data['detail']);
+              $ons.notification.alert(res.data.message);
           }
+        }).catch(err => {
+          if (err.response.data.fieldErrors == null)
+            $ons.notification.alert(err.response.data.message);
+          else
+            $ons.notification.alert(err.response.data.fieldErrors[0].defaultMessage);
         });
       }
     },
@@ -187,6 +299,9 @@ export default {
   computed: {
     isUserType() {
       return (this.signup.type === "user");
+    },
+    uploadedFile(){
+      return !(this.signup.careerProofImg === undefined || this.signup.profileImg === undefined || this.signup.idCardImg === undefined);
     }
   }
 }

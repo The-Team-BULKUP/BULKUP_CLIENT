@@ -1,70 +1,73 @@
 <template>
 <!--  <v-ons-pages>-->
+  <TopBar @toggle="toggleSideMenu"></TopBar>
 
-    <v-ons-splitter>
-      <v-ons-splitter-side
-          class="side"
-          swipeable width="100%" collapse="" side="left"
-          v-model:open="getOpenSide">
+      <v-ons-splitter>
+        <v-ons-splitter-side
+            class="side"
+            swipeable width="100%" collapse="" side="left"
+            v-model:open="getOpenSide">
 
-        <v-ons-list v-if="this.Auth.getters.isLogin === true">
-          <router-link to="/findCrew">
+          <v-ons-list v-if="this.Auth.getters.isLogin === true">
+            <router-link to="/findCrew">
+              <v-ons-list-item
+                  tappable modifier="chevron"
+                  @click="openSide = false">
+                <div class="center">크루 찾기</div>
+              </v-ons-list-item>
+            </router-link>
+
+            <router-link to="/createPartyView">
+              <v-ons-list-item
+                  tappable modifier="chevron"
+                  @click="openSide = false">
+                <div class="center">크루 모집</div>
+              </v-ons-list-item>
+            </router-link>
+
+            <router-link to="/findTrainer">
+              <v-ons-list-item
+                  tappable modifier="chevron"
+                  @click="openSide = false">
+                <div class="center">트레이너 찾기</div>
+              </v-ons-list-item>
+            </router-link>
+
             <v-ons-list-item
                 tappable modifier="chevron"
-                @click="openSide = false">
-              <div class="center">크루 찾기</div>
+                @click="logout">
+              <div class="center">로그아웃</div>
             </v-ons-list-item>
-          </router-link>
+          </v-ons-list>
 
-          <router-link to="/createPartyView">
-            <v-ons-list-item
-                tappable modifier="chevron"
-                @click="openSide = false">
-              <div class="center">크루 모집</div>
-            </v-ons-list-item>
-          </router-link>
+          <v-ons-list v-else>
+            <router-link to="/login">
+              <v-ons-list-item
+                  tappable modifier="chevron"
+                  @click="openSide = false">
+                <div class="center">로그인</div>
+              </v-ons-list-item>
+            </router-link>
 
-          <router-link to="/findTrainer">
-            <v-ons-list-item
-                tappable modifier="chevron"
-                @click="openSide = false">
-              <div class="center">트레이너 찾기</div>
-            </v-ons-list-item>
-          </router-link>
+            <router-link to="/signup">
+              <v-ons-list-item
+                  tappable modifier="chevron"
+                  @click="openSide = false">
+                <div class="center">회원가입</div>
+              </v-ons-list-item>
+            </router-link>
+          </v-ons-list>
 
-          <v-ons-list-item
-              tappable modifier="chevron"
-              @click="logout">
-            <div class="center">로그아웃</div>
-          </v-ons-list-item>
-        </v-ons-list>
+        </v-ons-splitter-side>
 
-        <v-ons-list v-else>
-          <router-link to="/login">
-            <v-ons-list-item
-                tappable modifier="chevron"
-                @click="openSide = false">
-              <div class="center">로그인</div>
-            </v-ons-list-item>
-          </router-link>
+        <v-ons-splitter-content>
+          <div :class="[openSide ? 'content-hide' : 'content']">
+          <router-view></router-view>
+          </div>
+        </v-ons-splitter-content>
 
-          <router-link to="/signup">
-            <v-ons-list-item
-                tappable modifier="chevron"
-                @click="openSide = false">
-              <div class="center">회원가입</div>
-            </v-ons-list-item>
-          </router-link>
-        </v-ons-list>
+      </v-ons-splitter>
 
-      </v-ons-splitter-side>
-    </v-ons-splitter>
-
-    <TopBar @toggle="toggleSideMenu"></TopBar>
-    <div :class="[openSide ? 'content-hide' : 'content']">
-<!--    <div :class="[openSide ? 'content-hide' : 'content']" style="padding-top: 0.8rem;">-->
-      <router-view></router-view>
-    </div>
     <BottomBar @offSide="offSideMenu" :current-page="currentPage"></BottomBar>
 <!--  </v-ons-pages>-->
 </template>

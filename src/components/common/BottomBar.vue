@@ -46,7 +46,7 @@ export default {
   computed: {
     getCurrentPage: function () {
       const lowerCasePage = this.currentPage.toLowerCase();
-      if (lowerCasePage === "")
+      if (lowerCasePage === "" || lowerCasePage === "home" || lowerCasePage === "/")
         return "home";
       else if (lowerCasePage.indexOf("home") !== -1)
         return "home";
@@ -59,7 +59,7 @@ export default {
       else if (lowerCasePage.indexOf("calendar") !== -1)
         return "calendar"
       else
-        return "home";
+        return "";
     },
   },
   methods: {

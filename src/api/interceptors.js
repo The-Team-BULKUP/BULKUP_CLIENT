@@ -1,4 +1,6 @@
 import loginStore from "@/api/store/auth";
+import $ons from "vue-onsenui";
+import {tokenReissue} from "@/api/index";
 
 export function setInterceptors(instance) {
     // Add a request interceptor
@@ -22,11 +24,25 @@ export function setInterceptors(instance) {
             // Do something with response data
             return response;
         },
-        function(error) {
-            // if (error.response.status === 500)
-            //     tokenReissue();
-            // Any status codes that falls outside the range of 2xx cause this function to trigger
-            // Do something with response error
+        async function (error) {
+            if (error.response.status === 500) {
+                await tokenReissue();
+                error.config.headers.Authorization = `Bearer ${loginStore.state.accessToken}`;
+                return instance.request(error.config);
+            }
+
+            if (error.response.status === 400) {
+                let message = "";
+                for (let i = 0; i < error.response.data.detail.length; i++) {
+                    message += error.response.data.detail[i].defaultMessage + "\n";
+                }
+                $ons.notification.alert(message);
+            } else if (error.response.data.detail != null) {
+                $ons.notification.alert(error.response.data.detail);
+            } else if (error.response.data.detail[0] != null){
+                $ons.notification.alert(error.response.data.detail[0]);
+            } else $ons.notification.alert("오류가 발생했습니다.");
+
             return Promise.reject(error);
         },
     );

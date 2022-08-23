@@ -2,7 +2,7 @@
 
   <div class="board">
     <div style="text-align: left;">
-      <a class="label">게시물 작성</a>
+      게시물 작성
     </div>
     <div class="box">
       <div><input id="title" class="text-input text-input--material" placeholder="제목" type="text" required></div>

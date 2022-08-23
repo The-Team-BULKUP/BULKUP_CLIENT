@@ -63,10 +63,16 @@ const routes = [
 				component: () => import("./view/SignupView.vue")
 			},
 			{
-				path: "/createPartyView",
-				name: "CreatePartyView",
+				path: "/createParty",
+				name: "CreateParty",
 				meta: {authRequired: true},
 				component: () => import("./view/CreatePartyView.vue")
+			},
+			{
+				path: "/findTrainer",
+				name: "FindTrainer",
+				meta: {authRequired: true},
+				component: () => import("./view/FindTrainerView.vue")
 			}
 		]
 	},

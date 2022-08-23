@@ -47,6 +47,7 @@ export default {
 
 .toolbar{
   height: 4rem;
+  z-index: 1 !important;
 }
 
 .toolbar-title{

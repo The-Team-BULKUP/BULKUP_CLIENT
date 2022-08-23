@@ -17,7 +17,7 @@
               </v-ons-list-item>
             </router-link>
 
-            <router-link to="/createPartyView">
+            <router-link to="/createParty">
               <v-ons-list-item
                   tappable modifier="chevron"
                   @click="openSide = false">
@@ -64,11 +64,12 @@
           <div :class="[openSide ? 'content-hide' : 'content']">
           <router-view></router-view>
           </div>
+
+
+          <BottomBar @offSide="offSideMenu" :current-page="currentPage"></BottomBar>
         </v-ons-splitter-content>
 
       </v-ons-splitter>
-
-    <BottomBar @offSide="offSideMenu" :current-page="currentPage"></BottomBar>
 <!--  </v-ons-pages>-->
 </template>
 
@@ -128,4 +129,11 @@ export default {
 .content-hide{
   display: none;
 }
+
+.side a {
+  color: black;
+  text-decoration: none;
+  text-underline: none;
+}
+
 </style>

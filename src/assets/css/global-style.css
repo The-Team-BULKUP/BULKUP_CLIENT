@@ -71,3 +71,16 @@
 .padding-content{
     padding-top: 4rem;
 }
+
+
+.distance{
+    margin: 6px 0 !important;
+    color:black;
+
+}
+
+.distance-selected {
+    margin: 6px 0 !important;
+    color: rgba(var(--highlight-color-rgb));
+}
+

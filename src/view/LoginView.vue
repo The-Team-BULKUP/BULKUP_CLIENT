@@ -58,10 +58,7 @@ export default {
       loginFrm.append('username', this.login.username);
       loginFrm.append('password', this.login.password);
       this.Auth.dispatch("doLogin", loginFrm).then(() => {
-        this.$router.go(-1);
-      }).catch((err) => {
-        this.errorMessage = err.response.data.detail;
-        $ons.notification.alert(this.errorMessage);
+        this.$router.push("/");
       });
     },
   },

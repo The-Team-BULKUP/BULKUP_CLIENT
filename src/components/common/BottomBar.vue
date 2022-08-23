@@ -73,10 +73,12 @@ export default {
 <style scoped>
 .bottom-bar {
   display: flex;
-  height: 4.3rem;
+  height: 5.3rem;
   flex-wrap: nowrap;
   justify-content: space-around;
-  padding: 0.8rem 0.5rem 0.5rem;
+  padding: 0.8rem 0.5rem 1rem;
+  background-color: #fafafa
+  /*z-index: -15 !important;*/
 }
 
 .bottom-bar-item{

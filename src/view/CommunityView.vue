@@ -1,19 +1,20 @@
 <template>
 
-
-  <v-ons-list>
-    <v-ons-list-item>
-      <div class="board">
-        <div class="title">
-          신발 질문~
-          <a class="info">3분전, 헬스맨님</a>
+  <div class="padding-content">
+    <v-ons-list>
+      <v-ons-list-item>
+        <div class="board">
+          <div class="title">
+            신발 질문~
+            <a class="info">3분전, 헬스맨님</a>
+          </div>
+          <div class="preview">
+          헬스할 때 신기 좋은 신발 추천 부탁이요
         </div>
-        <div class="preview">
-        헬스할 때 신기 좋은 신발 추천 부탁이요
-      </div>
-      </div>
-    </v-ons-list-item>
-  </v-ons-list>
+        </div>
+      </v-ons-list-item>
+    </v-ons-list>
+  </div>
 
 
   <v-ons-fab
@@ -62,7 +63,7 @@ export default {
 }
 
 .btn-float {
-  margin-bottom: 4.5rem;
+  margin-bottom: 5.3rem;
   background-color: rgb(250,250,250);
   color: black;
 }

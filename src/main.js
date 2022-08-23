@@ -8,10 +8,12 @@
 import 'onsenui/css/onsenui.css';
 import 'onsenui/css/onsen-css-components.css';
 import './assets/css/global-style.css';
-import './assets/vender/css/bootstrap.min.css';
 import 'v-calendar/dist/style.css';
 import { SetupCalendar, Calendar, DatePicker } from "v-calendar";
-// JS import
+import { BootstrapVue3 } from 'bootstrap-vue-3'
+// import './assets/vender/css/bootstrap.min.css';
+import 'bootstrap/dist/css/bootstrap.css'
+import 'bootstrap-vue-3/dist/bootstrap-vue-3.css'
 import { createApp } from 'vue';
 import App from './App.vue';
 import VueOnsen from 'vue-onsenui'; // This imports 'onsenui', so no need to import it separately
@@ -31,7 +33,8 @@ Object.values(components).forEach(component =>
 
 app.use(VueOnsen); // VueOnsen set here as plugin to VUE.
 app.use(router);
-app.use(SetupCalendar)
+app.use(SetupCalendar);
+app.use(BootstrapVue3);
 // eslint-disable-next-line
 app.component("Calendar", Calendar)
 // eslint-disable-next-line

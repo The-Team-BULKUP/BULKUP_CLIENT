@@ -23,7 +23,7 @@ export const LocationUtils = {
             /* global kakao */
             script.onload = () => kakao.maps.load(() => self.initMapFinally());
             script.src =
-                "//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=45488c69203b6e44b4dbd0576c8b6d56";
+                "//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=45488c69203b6e44b4dbd0576c8b6d56&libraries=services";
             document.head.appendChild(script);
         }
     },

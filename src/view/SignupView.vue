@@ -1,6 +1,6 @@
 <template>
   <!-- Login Template -->
-  <div class="page__content" style="top: 4.5rem !important; padding-top: 0; bottom: 4.3rem !important;">
+  <div class="page__content" style="top: 4.1rem !important; padding-top: 0; bottom: 5.3rem !important;">
       <ons-card>
         <ons-card-content>
           <div class="card-content">
@@ -61,20 +61,21 @@
                   <label for="price_per">회당 비용</label>
                   <input type="text" id="price_per" class="form-control" v-model="signup.pricePer" placeholder="회당 비용을 입력해주세요.">
                 </div>
-                <div class="form-group" v-if="!isUserType">
+                <div class="form-group" v-if="!isUserType" style=" margin-top:1rem">
                   <label for="gym">소속 헬스장</label>
-                  <div class="row" style="    place-content: center;">
-                  <input type="text" id="gym" class="form-control col-9" v-model="search.name" placeholder="상호명을 입력해주세요.">
+                  <div style="display:flex;">
+                  <input type="text" id="gym" class="form-control col-9" style="width:83% !important;" v-model="search.name" placeholder="상호명을 입력해주세요.">
 <!--                  <input type="text" id="gym_code" class="form-control col-9" v-model="signup.gym_code" style="display:none" placeholder="상호명을 입력해주세요.">-->
 <!--                  <br/><v-ons-search-input placeholder="Search something" v-model="query"></v-ons-search-input>-->
-                  <v-ons-button icon="md-zoom-in" modifier="outline" class="col-2" style="height:2.3rem;text-align-last: center;font-size:1.8rem" @click="serachEvent" ></v-ons-button>
+                  <v-ons-button icon="md-zoom-in" modifier="outline" class="col-2" style="height:2.3rem;text-align-last: center;font-size:1.8rem;" @click="serachEvent" ></v-ons-button>
                   </div>
+                  <div class="form-group">
                   <v-ons-list>
                     <v-ons-list-item>
                       <div class="center">
 
                           <v-ons-select v-if="search.gymList !== undefined" v-model="signup.gymCode">
-                          <option v-for="(gym, index) in search.gymList" :key="gym" :value="gym._id" :selected="index === 0">
+                          <option v-for="(gym, index) in search.gymList" :key="gym" :value="gym._id" :selected="index == 0">
                             {{ gym.gymName + " (" + gym.address + ")" }}
                             <!--                            {{ item.text }}-->
                           </option>
@@ -83,6 +84,7 @@
                       </div>
                     </v-ons-list-item>
                   </v-ons-list>
+                  </div>
                 </div>
                 <div class="form-group" >
                   <hr/>
@@ -207,45 +209,7 @@ export default {
       }
     },
     signupEvent() {
-      if (this.signup.realName === ""){
-        $ons.notification.alert("이름을 입력해주세요.");
-        return false;
-      }
 
-      if (this.signup.username === ""){
-        $ons.notification.alert("아이디를 입력해주세요.");
-        return false;
-      }
-
-      if (this.signup.password !== this.signup.password_check) {
-        $ons.notification.alert("비밀번호가 일치하지 않습니다.");
-        return false;
-      }
-
-      if (!this.isUserType && this.signup.gymCode === ""){
-        $ons.notification.alert("소속 헬스장을 선택해주세요.");
-        return false;
-      }
-
-      if (!this.isUserType && this.signup.pricePer === ""){
-        $ons.notification.alert("회당 가격을 입력해주세요.");
-        return false;
-      }
-
-      if (!this.isUserType && !this.uploadedFile){
-        $ons.notification.alert("관련 사진을 업로드해주세요.");
-        return false;
-      }
-
-      if (this.isUserType && this.signup.nickname === ""){
-        $ons.notification.alert("닉네임을 입력해주세요.");
-        return false;
-      }
-
-      if (this.signup.phone === ""){
-        $ons.notification.alert("핸드폰 번호를 입력해주세요.");
-        return false;
-      }
 
       if (this.isUserType){
         // 사용자 가입
@@ -254,17 +218,7 @@ export default {
           if (res.status === 201) {
             $ons.notification.alert("가입이 완료되었습니다.");
             this.$router.push("/login");
-          } else {
-            if (res.data.detail == null)
-              $ons.notification.alert("가입에 실패하였습니다.");
-            else
-              $ons.notification.alert(res.data.detail);
           }
-        }).catch(err => {
-          if (err.response.data.fieldErrors == null)
-            $ons.notification.alert(err.response.data.message);
-          else
-            $ons.notification.alert(err.response.data.fieldErrors[0].defaultMessage);
         });
       } else {
         // 트레이너 가입
@@ -272,18 +226,14 @@ export default {
           if (res.status === 201) {
             $ons.notification.alert("가입이 완료되었습니다. 승인까지 영업일 기준 약 1~2일 소요됩니다.");
             this.$router.push("/login");
-          } else {
-            if (res.data.detail == null)
-              $ons.notification.alert("가입에 실패하였습니다.");
-            else
-              $ons.notification.alert(res.data.message);
           }
-        }).catch(err => {
-          if (err.response.data.fieldErrors == null)
-            $ons.notification.alert(err.response.data.message);
-          else
-            $ons.notification.alert(err.response.data.fieldErrors[0].defaultMessage);
         });
+        //     .catch(err => {
+        //   if (err.response.data.fieldErrors == null)
+        //     $ons.notification.alert(err.response.data.message);
+        //   else
+        //     $ons.notification.alert(err.response.data.fieldErrors[0].defaultMessage);
+        // });
       }
     },
     serachEvent() {
@@ -308,5 +258,9 @@ export default {
 </script>
 
 <style scoped>
+
+.form-group{
+  padding-top: 0.8rem;
+}
 
 </style>

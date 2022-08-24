@@ -12,7 +12,7 @@
 
               <div class="left" style="display: block;text-align-last: center;">
                 <div v-if="partyIn.trainer != null">
-                    <img id="trainer_profile" class="list-item__thumbnail" style="width:4rem !important; height: 5rem" :src="`data:image/png;base64,${partyIn.trainer.profileImg}`" alt="trainer profile">
+                  <img id="trainer_profile" class="list-item__thumbnail" style="width:4rem !important; height: 5rem" :src="`data:image/png;base64,${partyIn.trainer.profileImg}`" alt="trainer profile">
                     <div style="padding-top: 0.5rem;">{{partyIn.trainer.realName}}<br/> 트레이너</div>
                 </div>
                 <div v-else>
@@ -40,15 +40,16 @@
               <div class="right">
                 <div style="margin-bottom: auto;">
                 <div v-if="partyIn.trainer != null">
-                  <div class="dropdown show">
-                    <a class="btn btn-secondary" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                      <v-ons-icon icon="md-more"></v-ons-icon>
-                    </a>
-                    <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                      <a class="dropdown-item" href="#">Action</a>
-                      <a class="dropdown-item" href="#">Another action</a>
-                      <a class="dropdown-item" href="#">Something else here</a>
-                    </div>
+                  <div class="btn-group">
+                    <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+<!--                      <v-ons-icon icon="md-more"></v-ons-icon>-->
+                    </button>
+                      <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                        <a class="dropdown-item" href="#" @click="trainerDetail = partyIn.trainer"
+                           data-bs-toggle="modal" data-bs-target="#staticBackdrop">트레이너 상세보기</a>
+                        <a class="dropdown-item" href="#">Another action</a>
+                        <a class="dropdown-item" href="#">Something else here</a>
+                      </div>
                   </div>
                 </div>
                 <div v-else>
@@ -86,9 +87,47 @@
         <a style="padding-top: 0.4rem;color: black;text-underline: none;text-decoration: underline;">👉🏼로그인 / 회원가입 하러 가기👈🏻</a>
       </router-link>
     </div>
-
     </div>
 
+  <teleport to="body">
+    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h3 class="modal-title" id="staticBackdropLabel">{{ (!!trainerDetail) ? (trainerDetail.realName) : '' }} 트레이너</h3>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div v-if="!!trainerDetail" class="modal-body" style="text-align: -webkit-center;">
+            <div class="row col-12">
+              <img v-if="!!trainerDetail" :src="trainerDetail.gym.gymPhoto">
+            </div>
+            <table class="table">
+              <tbody>
+              <tr>
+                <th scope="row">소속 헬스장</th>
+                <td>{{ (trainerDetail.gym.gymName) }}</td>
+              </tr>
+              <tr>
+                <th scope="row">트레이너 소개</th>
+                <td>{{trainerDetail.introduce}}</td>
+              </tr>
+              <tr>
+                <th scope="row">가격</th>
+                <td>{{ trainerDetail.pricePer }}원 / 1회</td>
+              </tr>
+              </tbody>
+            </table>
+
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+            <button type="button" class="btn btn-primary" @click="joinPartyCrew">참여하기</button>
+            <!--            <button v-show="this.Auth.isTrainer" type="button" class="btn btn-primary" @click="joinPartyCrew">협의하기</button>-->
+          </div>
+        </div>
+      </div>
+    </div>
+  </teleport>
 </template>
 
 <script>
@@ -99,6 +138,7 @@ export default {
   data(){
     return {
       myPartyIn : null,
+      trainerDetail : null,
     }
   },
   created() {
@@ -109,6 +149,11 @@ export default {
           this.myPartyIn = res.data.myParty;
       }
     });
+  },
+  methods: {
+    // goToTrainerDetail(trainer) {
+    //
+    // }
   }
 }
 </script>

@@ -3,7 +3,8 @@
       <div id="map">
         <div v-if="!isLoaded" style="horiz-align: center">
           <br/>
-          로딩중입니다<br/>
+          인근 헬스장과<br/>
+          트레이너를 찾고있습니다.<br/>
           잠시만 기다려주세요!<br/><br/>
           <v-ons-progress-circular indeterminate></v-ons-progress-circular>
         </div>
@@ -17,64 +18,29 @@
           <v-ons-button @click="myLocation.distance = 5000" modifier="quiet" :class="(this.myLocation.distance === 5000) ? 'distance-selected button button--quiet' : 'distance button button--quiet'  ">5km</v-ons-button>
           <v-ons-button @click="myLocation.distance = 10000" modifier="quiet" :class="(this.myLocation.distance === 10000) ? 'distance-selected button button--quiet' : 'distance button button--quiet'  ">10km</v-ons-button>
           <v-ons-button @click="myLocation.distance = 30000"  modifier="quiet" :class="(this.myLocation.distance === 30000) ? 'distance-selected button button--quiet' : 'distance button button--quiet'   ">30km</v-ons-button>
+<!--          <v-ons-button @click="myLocation.distance = 50000"  modifier="quiet" :class="(this.myLocation.distance === 50000) ? 'distance-selected button button&#45;&#45;quiet' : 'distance button button&#45;&#45;quiet'   ">50km</v-ons-button>-->
         </v-ons-col>
       </div>
     </div>
 
-  <div class="page__content" style="top: 19rem; !important; padding-top: 0; bottom: 5.3rem !important;">
-  <div class="dropdown">
-    <select>
-      <option value="1">별점순</option>
-      <option value="2">거리순</option>
-      <option value="3">낮은가격순</option>
-    </select>
-  </div>
-  <div class="board_list_wrap">
+  <div class="page__content" v-if="isLoaded" style="top: 18rem; !important; padding-top: 0; bottom: 5.3rem !important;">
+    <div v-if="this.trainerList.length === 0" style="padding-top:1rem">
+      주변에 트레이너가 없습니다.<br/>
+      선호 거리를 늘려주세요.
+    </div>
+  <div v-else class="board_list_wrap">
     <table class="board_list">
-      <caption>트레이너 목록</caption>
       <tbody>
-      <tr>
+      <tr v-for="trainer in trainerList" :key="trainer">
         <td>
-          <img class="profile_img" src="">
+<!--          <img class="profile_img" src="">-->
+          <img id="trainer_profile" class="list-item__thumbnail" style="width:4rem !important; height: 5rem" :src="`data:image/png;base64,${trainer.profileImg}`" alt="trainer profile">
         </td>
         <td class="title">
-          <span class="name"> 김민지 </span><span class="info"> 트레이너 </span>
-          <div class="account">바디프로필 전문 트레이너</div>
-          <span class="count"> 1회 </span><span class="cost"> 35,000원 / 10회 </span>
-          <div class="location">세모 헬스장 | 수원역 도보 2분</div>
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <img class="profile_img" src="">
-        </td>
-        <td class="title">
-          <span class="name"> 김민지 </span><span class="info"> 트레이너 </span>
-          <div class="account">바디프로필 전문 트레이너</div>
-          <span class="count"> 1회 </span><span class="cost"> 35,000원 / 10회 </span>
-          <div class="location">세모 헬스장 | 수원역 도보 2분</div>
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <img class="profile_img" src="">
-        </td>
-        <td class="title">
-          <span class="name"> 김민지 </span><span class="info"> 트레이너 </span>
-          <div class="account">바디프로필 전문 트레이너</div>
-          <span class="count"> 1회 </span><span class="cost"> 35,000원 / 10회 </span>
-          <div class="location">세모 헬스장 | 수원역 도보 2분</div>
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <img class="profile_img" src="">
-        </td>
-        <td class="title">
-          <span class="name"> 김민지 </span><span class="info"> 트레이너 </span>
-          <div class="account">바디프로필 전문 트레이너</div>
-          <span class="count"> 1회 </span><span class="cost"> 35,000원 / 10회 </span>
-          <div class="location">세모 헬스장 | 수원역 도보 2분</div>
+          <span class="name">{{trainer.realName}}</span><span class="info"> 트레이너 </span><br/>
+<!--          <div class="account">바디프로필 전문 트레이너</div>-->
+          <span class="count"> 1회 </span><span class="cost"> {{ trainer.pricePer }}원 </span>
+          <div class="location">{{ trainer.gym.gymName }} - {{trainer.distance.toFixed() }}m</div>
         </td>
       </tr>
       </tbody>
@@ -84,60 +50,77 @@
 </template>
 
 <script>
+import {LocationUtils} from "@/util/locationUtil";
+import {Trainer} from "@/api/trainer";
+
 export default {
-  name: "KakaoMap",
-  mounted() {
-    if (window.kakao && window.kakao.maps) {
-      this.initMap();
-    } else {
-      const script = document.createElement("script");
-      /* global kakao */
-      script.onload = () => kakao.maps.load(this.initMap);
-      script.src =
-          "//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=45488c69203b6e44b4dbd0576c8b6d56";
-      document.head.appendChild(script);
+  name: "FindTrainerView",
+  data(){
+    return {
+      myLocation: {
+        lat: 0,
+        lng: 0,
+        distance: 3000,
+      },
+      trainerList : [],
+      isLoaded: false,
     }
   },
-  methods: {
-    initMap() {
-      const container = document.getElementById("map");
-      const options = {
-        center: new kakao.maps.LatLng(33.450701, 126.570667),
-        level: 5,
-      };
-      this.map = new kakao.maps.Map(container, options);
-    },
-    changeSize(size) {
-      const container = document.getElementById("map");
-      container.style.width = `${size}px`;
-      container.style.height = `${size}px`;
+  watch: {
+    'myLocation.distance' : function(){
+      console.info("changed and reload");
+      let center = this.map.getCenter();
+      if (this.myLocation.distance === 3000) {
+        this.map.setLevel(4, {anchor: center, animate: true});
+      } else if (this.myLocation.distance === 5000) {
+        this.map.setLevel(5, {anchor: center, animate: true});
+      } else if (this.myLocation.distance === 10000) {
+        this.map.setLevel(6, {anchor: center, animate: true});
+      } else if (this.myLocation.distance === 30000) {
+        this.map.setLevel(8, {anchor: center, animate: true});
+      }
+      this.map.setCenter(new window.kakao.maps.LatLng(this.myLocation.lat, this.myLocation.lng));
+      this.getTrainerList();
       this.map.relayout();
     },
-    displayMarker(markerPositions) {
-      if (this.markers.length > 0) {
-        this.markers.forEach((marker) => marker.setMap(null));
-      }
+  },
+  mounted: function (){
+    LocationUtils.getLocation().then(res => {
+      this.myLocation.lat = res.coords.latitude;
+      this.myLocation.lng = res.coords.longitude;
+      LocationUtils.initMap(this);
+      this.getTrainerList();
+    });
+  },
+  methods: {
+    initMapFinally() {
+      console.info("callback initMapFinally");
+      console.info(this.myLocation);
+      let mapContainer = document.getElementById('map'), // 지도를 표시할 div
+          position = new window.kakao.maps.LatLng(this.myLocation.lat, this.myLocation.lng),
+          mapOption = {
+            center: position, // 지도의 중심좌표
+            draggable: true,
+            scrollwheel: true,
+            zoomable: true,
+            level: 4 // 지도의 확대 레벨
+          };
 
-      const positions = markerPositions.map(
-          (position) => new kakao.maps.LatLng(...position)
-      );
+      this.map = new window.kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
+      this.map.relayout();
 
-      if (positions.length > 0) {
-        this.markers = positions.map(
-            (position) =>
-                new kakao.maps.Marker({
-                  map: this.map,
-                  position,
-                })
-        );
-
-        const bounds = positions.reduce(
-            (bounds, latlng) => bounds.extend(latlng),
-            new kakao.maps.LatLngBounds()
-        );
-
-        this.map.setBounds(bounds);
-      }
+      this.isLoaded = true;
+      this.map.setDraggable(true);
+      this.map.setZoomable(true);
+    },
+    getTrainerList(){
+      const params = `?lat=${this.myLocation.lat}&lng=${this.myLocation.lng}&distance=${this.myLocation.distance}`;
+      Trainer.fetchTrainerByDistance(params).then(res => {
+        if (res.status === 200) {
+          this.trainerList = res.data.trainerList;
+          console.log(this.trainerList);
+        }
+      });
     },
   },
 };

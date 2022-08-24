@@ -8,6 +8,6 @@ export const Account = {
         return signupUserAxios.post("", account, {headers : { "Content-Type": "multipart/form-data"}});
     },
     makeTrainerAccount: async (account) => {
-        return signupUserAxios.post("", account, {headers : { "Content-Type": "multipart/form-data"}});
+        return signupTrainerAxios.post("", account, {headers : { "Content-Type": "multipart/form-data"}});
     },
 }

@@ -18,10 +18,10 @@ export const loginStore = new Vuex.Store({
             return (state.accessToken !== '' && state.refreshToken !== '');
         },
         isUser(state) {
-            return (state.role === 'USER');
+            return (state.role.upperCase === 'USER');
         },
         isTrainer(state) {
-            return (state.role === 'TRAINER');
+            return (state.role.upperCase === 'TRAINER');
         },
         tokenExpired(state) {
             return state.tokenExpired;

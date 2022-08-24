@@ -12,7 +12,7 @@
         <td class="title" style="font-size: 1.3rem;text-align: left">
           <span class="name" style="font-size: 1.3rem"> 김민지 </span><span class="info" style="font-size: 0.8rem;color: #999"> 트레이너 </span>
           <div class="account" style="font-size: 0.8rem;color: #999; padding-top: 0.3rem">전문분야</div>
-          <div class="account_detail" style="font-size: 0.8rem; padding-bottom: 0.3rem">바디프로필 전문 트레이너</div>
+          <div class="account_detail" style="font-size: 0.8rem; padding-bottom: 0.3rem">바디 프로필 전문 트레이너</div>
           <span class="button">일 정</span><span class="button">문 의</span>
           <v-ons-button modifier="outline" style="width: 8.5rem; height: 1.3rem">회 원 권</v-ons-button>
         </td>

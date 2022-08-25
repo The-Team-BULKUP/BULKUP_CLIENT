@@ -14,7 +14,7 @@
                                                                              style="font-size: 0.8rem;color: #999"> 트레이너 </span>
           <div className="account" style="font-size: 0.8rem;color: #999; padding-top: 0.3rem">전문분야</div>
           <div className="account_detail" style="font-size: 0.8rem; padding-bottom: 0.3rem">바디프로필 전문 트레이너</div>
-          <span className="button">일 정</span><span className="button">문 의</span>
+          <span className="button">일  정</span><span className="button">문  의</span>
           <v-ons-button modifier="outline" style="width: 8.5rem; height: 1.3rem">회 원 권</v-ons-button>
         </td>
       </tr>

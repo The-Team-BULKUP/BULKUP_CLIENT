@@ -8,7 +8,7 @@
           <v-ons-progress-circular indeterminate></v-ons-progress-circular>
       </div>
     </div>
-    <div class="distance-div" v-if="isLoaded" style="background: #e8e7e7">
+    <div class="distance-div" v-if="isLoaded && this.Auth.getters.isUser" style="background: #e8e7e7">
       <v-ons-col>
   <!--      <a class="distance">선호 거리</a>-->
         선호 거리
@@ -32,7 +32,7 @@
             ({{ (toDay(party.preferredDay) === "요일 상관 없음") ? "요일 무관" : toDay(party.preferredDay) }})
             </span>
           </span>
-          <span class="list-item__subtitle">{{ '1회당 ' + party.preferredPrice + '원 - 총 ' + party.preferredHowMany + ' 회'}}</span>
+          <span class="list-item__subtitle">{{ '1회당 ' + Number(party.preferredPrice).toLocaleString() + '원 - 총 ' + party.preferredHowMany + ' 회'}}</span>
         </div>
         <div class="right">
           <v-ons-col style="text-align: -webkit-right;">
@@ -42,13 +42,13 @@
             </div>
 <!--                          class="button button&#45;&#45;quiet"-->
 <!--          <button class="btn-moa toolbar-btn backcolor-1" @click="findCrew(party)">자세히보기</button>-->
-          <div><span class="list-item__subtitle">{{ party.distance.toFixed() }}m</span></div>
+          <div><span class="list-item__subtitle">{{ Number(party.distance.toFixed()).toLocaleString() }}m</span></div>
           </v-ons-col>
         </div>
       </v-ons-list-item>
     </v-ons-list>
   </div>
-  <div class="message" v-if="isLoaded && this.partyCrew.length !== 0">
+  <div class="message" v-if="isLoaded && this.Auth.getters.isUser && this.partyCrew.length !== 0">
     <div>
     원하는 크루가 없나요?
     </div>
@@ -57,13 +57,21 @@
     </router-link>
   </div>
 
-  <div class="message" v-if="isLoaded && this.partyCrew.length === 0">
+  <div class="message" v-if="isLoaded && this.Auth.getters.isUser && this.partyCrew.length === 0">
     <div>
       주변에서 크루를 찾을 수 없습니다.
     </div>
     <router-link to="/createParty">
       <a style="padding-top: 0.4rem;color: black;text-underline: none;font-weight: lighter">직접 크루를 모집해보세요.</a>
     </router-link>
+  </div>
+
+  <div class="message" v-if="isLoaded && this.Auth.getters.isTrainer && this.partyCrew.length === 0">
+    <div>
+      아쉽네요!<br/>
+      주변에서 파티를 찾을 수 없습니다.<br/>
+
+    </div>
   </div>
 
   <!-- Modal -->
@@ -89,11 +97,15 @@
               </tr>
               <tr>
                 <th scope="row">선호 가격</th>
-                <td>{{ partyDetail.preferredPrice }}원 / 1회</td>
+                <td>{{ Number(partyDetail.preferredPrice).toLocaleString() }}원 / 1회</td>
               </tr>
               <tr>
                 <th scope="row">선호 횟수</th>
                 <td>{{ partyDetail.preferredHowMany }}회</td>
+              </tr>
+              <tr>
+                <th scope="row">선호 거리</th>
+                <td>{{ Number(partyDetail.preferredDistance).toLocaleString() }}m</td>
               </tr>
               <tr>
                 <th scope="row">현재 참가자</th>
@@ -114,7 +126,8 @@
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
-            <button type="button" class="btn btn-primary" @click="joinPartyCrew">참여하기</button>
+            <button v-if="this.Auth.getters.isUser" type="button" class="btn btn-primary" @click="joinPartyCrew">참여하기</button>
+            <button v-else-if="this.Auth.getters.isTrainer" type="button" class="btn btn-primary" @click="consultParty">협의하기</button>
           </div>
         </div>
       </div>
@@ -143,6 +156,7 @@ export default {
       partyCrew : [],
       markers: [],
       partyDetail: {},
+      partyForTrainer: [],
     };
   },
   watch: {
@@ -173,16 +187,29 @@ export default {
   },
   methods: {
     loadPartyCrew() {
-      Party.fetchPartyCrew(this.myLocation.lat, this.myLocation.lng, this.myLocation.distance).then(res => {
-        if (res.status !== 200){
-          $ons.notification.alert(res.data['detail']);
-        } else {
-          this.partyCrew = res.data;
-          LocationUtils.displayMarker(this, this.markers, this.partyCrew.map(party => { return {lat: party.point.lat, lng: party.point.lng, name: party.name}}));
-          console.info(this.partyCrew);
-        }
-        this.isLoaded = true;
-      })
+      if (this.Auth.getters.isUser){
+        Party.fetchPartyCrew(this.myLocation.lat, this.myLocation.lng, this.myLocation.distance).then(res => {
+          if (res.status !== 200){
+            $ons.notification.alert(res.data['detail']);
+          } else {
+            this.partyCrew = res.data;
+            LocationUtils.displayMarker(this, this.markers, this.partyCrew.map(party => { return {lat: party.point.lat, lng: party.point.lng, name: party.name}}));
+            console.info(this.partyCrew);
+          }
+          this.isLoaded = true;
+        })
+      } else if (this.Auth.getters.isTrainer){
+          Party.fetchPartyForTrainer().then(res => {
+            if (res.status !== 200){
+              $ons.notification.alert(res.data['detail']);
+            } else {
+              this.partyCrew = res.data;
+              LocationUtils.displayMarker(this, this.markers, this.partyCrew.map(party => { return {lat: party.point.lat, lng: party.point.lng, name: party.name}}));
+              console.info(this.partyCrew);
+            }
+            this.isLoaded = true;
+          })
+      }
     },
 
     joinPartyCrew() {
@@ -193,6 +220,21 @@ export default {
                 if (res.status === 204){
                   $ons.notification.alert('참여에 성공하였습니다.');
                   this.$router.push({path: "/"});
+                }
+              })
+            }
+          });
+    },
+
+    consultParty() {
+      //todo : 협의하기
+      $ons.notification.confirm('협의 하시겠습니까?')
+          .then((response) => {
+            if (response == 1) {
+              Party.consultParty(this.partyDetail.id).then(res => {
+                if (res.status === 204){
+                  $ons.notification.alert('채팅방을 확인해주세요!');
+                  this.$router.push({path: "/chat"});
                 }
               })
             }

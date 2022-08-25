@@ -20,5 +20,8 @@ export const Party = {
     },
     fetchMyPartyIn: async () => {
         return partyAxios.get('/my/in');
+    },
+    fetchPartyForTrainer: async () => {
+        return partyAxios.get('/find');
     }
 }

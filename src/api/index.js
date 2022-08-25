@@ -2,7 +2,6 @@ import axios from 'axios';
 import { setInterceptors } from './interceptors';
 import loginStore from "@/api/store/auth";
 import Auth from "@/api/store/auth";
-export const HOST = process.env["API_HOST"] || "http://localhost:8080/api/v1";
 
 // export function createInstanceAtRoot(url) {
 //     return axios.create({
@@ -20,7 +19,7 @@ export function createInstanceWithAuth(url) { // Token값과 특정 url을 붙�
     }
     // 토큰 만료가 아니면
     const instance = axios.create({
-        baseURL: `${HOST}${url}`,
+        baseURL: `${process.env.VUE_APP_API_HOST}${url}`,
     })
     return setInterceptors(instance);
 }

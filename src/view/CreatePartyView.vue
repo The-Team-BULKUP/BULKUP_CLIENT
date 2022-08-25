@@ -8,19 +8,19 @@
         <v-ons-progress-circular indeterminate></v-ons-progress-circular>
       </div>
     </div>
-<!--    <div class="distance-div" v-if="isLoaded" style="background: #e8e7e7">-->
-<!--      <v-ons-col>-->
-<!--        &lt;!&ndash;      <a class="distance">선호 거리</a>&ndash;&gt;-->
-<!--        선호 거리-->
-<!--        &lt;!&ndash;      <v-ons-range v-model="this.myLocation.distance" style="width: 40%;"></v-ons-range>&ndash;&gt;-->
-<!--        <v-ons-button @click="myLocation.distance = 3000" modifier="quiet" :class="(this.myLocation.distance === 3000) ? 'distance-selected button button&#45;&#45;quiet' : 'distance button button&#45;&#45;quiet'  ">3km</v-ons-button>-->
-<!--        <v-ons-button @click="myLocation.distance = 5000" modifier="quiet" :class="(this.myLocation.distance === 5000) ? 'distance-selected button button&#45;&#45;quiet' : 'distance button button&#45;&#45;quiet'  ">5km</v-ons-button>-->
-<!--        <v-ons-button @click="myLocation.distance = 10000" modifier="quiet" :class="(this.myLocation.distance === 10000) ? 'distance-selected button button&#45;&#45;quiet' : 'distance button button&#45;&#45;quiet'  ">10km</v-ons-button>-->
-<!--        <v-ons-button @click="myLocation.distance = 30000"  modifier="quiet" :class="(this.myLocation.distance === 30000) ? 'distance-selected button button&#45;&#45;quiet' : 'distance button button&#45;&#45;quiet'   ">30km</v-ons-button>-->
-<!--      </v-ons-col>-->
-<!--    </div>-->
+    <div class="distance-div" v-if="isLoaded" style="background: white">
+      <v-ons-col>
+        <!--      <a class="distance">선호 거리</a>-->
+        선호 거리
+        <!--      <v-ons-range v-model="this.myLocation.distance" style="width: 40%;"></v-ons-range>-->
+        <v-ons-button @click="myLocation.distance = 3000" modifier="quiet" :class="(this.myLocation.distance === 3000) ? 'distance-selected button button--quiet' : 'distance button button--quiet'  ">3km</v-ons-button>
+        <v-ons-button @click="myLocation.distance = 5000" modifier="quiet" :class="(this.myLocation.distance === 5000) ? 'distance-selected button button--quiet' : 'distance button button--quiet'  ">5km</v-ons-button>
+        <v-ons-button @click="myLocation.distance = 10000" modifier="quiet" :class="(this.myLocation.distance === 10000) ? 'distance-selected button button--quiet' : 'distance button button--quiet'  ">10km</v-ons-button>
+        <v-ons-button @click="myLocation.distance = 30000"  modifier="quiet" :class="(this.myLocation.distance === 30000) ? 'distance-selected button button--quiet' : 'distance button button--quiet'   ">30km</v-ons-button>
+      </v-ons-col>
+    </div>
 
-    <div class="page__content" style="top: 15rem; !important; padding-top: 0; bottom: 5.3rem !important;" v-if="isLoaded">
+    <div class="page__content" style="top: 18rem; !important; padding-top: 0; bottom: 5.3rem !important;" v-if="isLoaded">
       <v-ons-list>
         <v-ons-list-header>
           동네 설정

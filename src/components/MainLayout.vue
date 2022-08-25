@@ -9,35 +9,55 @@
             v-model:open="getOpenSide">
 
           <v-ons-list v-if="this.Auth.getters.isLogin === true">
-            <router-link to="/findCrew">
+            <div v-if="this.Auth.getters.isUser">
+              <router-link to="/findCrew">
+                <v-ons-list-item
+                    tappable modifier="chevron"
+                    @click="openSide = false">
+                  <div class="center">크루 찾기</div>
+                </v-ons-list-item>
+              </router-link>
+
+              <router-link to="/createParty">
+                <v-ons-list-item
+                    tappable modifier="chevron"
+                    @click="openSide = false">
+                  <div class="center">크루 모집</div>
+                </v-ons-list-item>
+              </router-link>
+
+              <router-link to="/findTrainer">
+                <v-ons-list-item
+                    tappable modifier="chevron"
+                    @click="openSide = false">
+                  <div class="center">트레이너 찾기</div>
+                </v-ons-list-item>
+              </router-link>
+
               <v-ons-list-item
                   tappable modifier="chevron"
-                  @click="openSide = false">
-                <div class="center">크루 찾기</div>
+                  @click="logout">
+                <div class="center">로그아웃</div>
               </v-ons-list-item>
-            </router-link>
+            </div>
 
-            <router-link to="/createParty">
+
+
+            <div v-else-if="this.Auth.getters.isTrainer">
+              <router-link to="/findCrew">
+                <v-ons-list-item
+                    tappable modifier="chevron"
+                    @click="openSide = false">
+                  <div class="center">크루 찾기</div>
+                </v-ons-list-item>
+              </router-link>
+
               <v-ons-list-item
                   tappable modifier="chevron"
-                  @click="openSide = false">
-                <div class="center">크루 모집</div>
+                  @click="logout">
+                <div class="center">로그아웃</div>
               </v-ons-list-item>
-            </router-link>
-
-            <router-link to="/findTrainer">
-              <v-ons-list-item
-                  tappable modifier="chevron"
-                  @click="openSide = false">
-                <div class="center">트레이너 찾기</div>
-              </v-ons-list-item>
-            </router-link>
-
-            <v-ons-list-item
-                tappable modifier="chevron"
-                @click="logout">
-              <div class="center">로그아웃</div>
-            </v-ons-list-item>
+            </div>
           </v-ons-list>
 
           <v-ons-list v-else>
@@ -99,7 +119,6 @@ export default {
     logout() {
       this.openSide = false;
       this.Auth.dispatch("doLogout").then(() => {
-        this.$router.go(-1);
         this.openSide = true;
       });
     },

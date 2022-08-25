@@ -18,7 +18,6 @@ import { createApp } from 'vue';
 import App from './App.vue';
 import VueOnsen from 'vue-onsenui'; // This imports 'onsenui', so no need to import it separately
 
-
 const app = createApp(App);
 app.config.globalProperties.Auth = Auth;
 

@@ -70,20 +70,20 @@
                   <v-ons-button icon="md-zoom-in" modifier="outline" class="col-2" style="height:2.3rem;text-align-last: center;font-size:1.8rem;" @click="serachEvent" ></v-ons-button>
                   </div>
                   <div class="form-group">
-                  <v-ons-list>
-                    <v-ons-list-item>
-                      <div class="center">
+                    <v-ons-list>
+                      <v-ons-list-item>
+                        <div class="center">
 
                           <v-ons-select v-if="search.gymList !== undefined" v-model="signup.gymCode">
-                          <option v-for="(gym, index) in search.gymList" :key="gym" :value="gym._id" :selected="index == 0">
-                            {{ gym.gymName + " (" + gym.address + ")" }}
-                            <!--                            {{ item.text }}-->
-                          </option>
-                        </v-ons-select>
+                            <option v-for="(gym, index) in search.gymList" :key="gym" :value="gym._id" :selected="index == 0">
+                              {{ gym.gymName + " (" + gym.address + ")" }}
+                              <!--                            {{ item.text }}-->
+                            </option>
+                          </v-ons-select>
 
-                      </div>
-                    </v-ons-list-item>
-                  </v-ons-list>
+                        </div>
+                      </v-ons-list-item>
+                    </v-ons-list>
                   </div>
                 </div>
                 <div class="form-group" >

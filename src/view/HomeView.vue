@@ -1,7 +1,7 @@
 <template>
-  <div class="padding-content">
+  <div class="page__content" style="top: 4.1rem !important; padding-top: 0; bottom: 5.3rem !important;">
+    <div id="user" v-if="this.Auth.getters.isUser">
       <v-ons-card>
-<!--        <img src="https://monaca.io/img/logos/download_image_onsenui_01.png" alt="Onsen UI" style="width: 100%">-->
         <div class="title">
           내가 가입한 크루
         </div>
@@ -25,15 +25,19 @@
                 <div v-if="partyIn.partyType === 'crew'">
                   <div class="list-item__title">&lt;그룹피티></div>
                   <div class="list-item__title">{{partyIn.name}} 팀</div>
+                  <span class="list-item__title" style="color:grey">{{ bitToDay(partyIn.preferredDay) }} | {{ bitToHour(partyIn.preferredTime) }}</span>
                 </div>
                 <div v-else>
                   <div class="list-item__title">&lt;개인피티></div>
+                  <span class="list-item__title" style="color:grey">{{ bitToDay(partyIn.preferredDay) }} | {{ bitToHour(partyIn.preferredTime) }}</span>
                 </div>
 
-                <span class="list-item__title"></span>
 
                 <div v-if="partyIn['trainer'] != null">
                   <span class="list-item__subtitle">{{partyIn.trainer.gym.gymName}} 체육관</span>
+                </div>
+                <div v-else>
+                  <span class="list-item__subtitle">트레이너 찾기기능을 통해 찾아보세요!</span>
                 </div>
               </div>
 
@@ -42,26 +46,22 @@
                 <div v-if="partyIn.trainer != null">
                   <div class="btn-group">
                     <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-<!--                      <v-ons-icon icon="md-more"></v-ons-icon>-->
+                      <!--                      <v-ons-icon icon="md-more"></v-ons-icon>-->
                     </button>
-                      <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                        <a class="dropdown-item" href="#" @click="trainerDetail = partyIn.trainer"
-                           data-bs-toggle="modal" data-bs-target="#staticBackdrop">트레이너 상세보기</a>
-                        <a class="dropdown-item" href="#">Another action</a>
-                        <a class="dropdown-item" href="#">Something else here</a>
-                      </div>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                      <a class="dropdown-item" href="#" @click="trainerDetail = partyIn.trainer"
+                         data-bs-toggle="modal" data-bs-target="#staticBackdrop">상세보기</a>
+                    </div>
                   </div>
                 </div>
                 <div v-else>
-                  <div class="dropdown show">
-                    <a class="btn btn-secondary" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                      <v-ons-icon icon="md-more"></v-ons-icon>
-                    </a>
-
+                  <div class="btn-group">
+                    <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                      <!--                      <v-ons-icon icon="md-more"></v-ons-icon>-->
+                    </button>
                     <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                      <a class="dropdown-item" href="#">Action</a>
-                      <a class="dropdown-item" href="#">Another action</a>
-                      <a class="dropdown-item" href="#">Something else here</a>
+                      <a class="dropdown-item" href="#" @click="trainerDetail = partyIn.trainer"
+                         data-bs-toggle="modal" data-bs-target="#staticBackdrop">???</a>
                     </div>
                   </div>
                 </div>
@@ -79,8 +79,73 @@
 
         </div>
       </v-ons-card>
+    </div>
 
-    <div v-if="this.Auth.getters.isLogin === false">
+
+    <div v-if="this.Auth.getters.isLogin && this.Auth.getters.isTrainer">
+      <v-ons-card>
+        안녕하세요,<br/>{{this.Auth.state.realName}} 트레이너님!
+        <div class="content">
+        </div>
+      </v-ons-card>
+
+      <v-ons-card>
+        <div class="title">다가오는 일정</div>
+        <div class="content">
+          <v-ons-card v-for="sch in this.comingSchedule" :key="sch">
+            <div>
+              {{sch.name}}
+              <!--              - {{ (sch.type === 'party') ? '(그룹피티)' : '(개인피티)' }}-->
+            </div>
+            <div>{{new Date(sch.start).toLocaleString()}} ~ {{new Date(sch.end).toLocaleTimeString()}}</div>
+          </v-ons-card>
+        </div>
+      </v-ons-card>
+
+      <v-ons-card>
+        <div class="title">지난 일정</div>
+        <div class="content">
+          <v-ons-card v-for="sch in this.doneSchedule" :key="sch">
+            <div>
+              {{sch.name}}
+              <!--              - {{ (sch.type === 'party') ? '(그룹피티)' : '(개인피티)' }}-->
+            </div>
+            <div>{{new Date(sch.start).toLocaleString()}} ~ {{new Date(sch.end).toLocaleTimeString()}}</div>
+          </v-ons-card>
+        </div>
+      </v-ons-card>
+    </div>
+
+    <div v-else-if="this.Auth.getters.isLogin && this.Auth.getters.isUser">
+
+      <v-ons-card>
+        <div class="title">다가오는 일정</div>
+        <div class="content">
+          <v-ons-card v-for="sch in this.comingSchedule" :key="sch">
+            <div>
+              {{sch.name}}
+              <!--              - {{ (sch.type === 'party') ? '(그룹피티)' : '(개인피티)' }}-->
+            </div>
+            <div>{{new Date(sch.start).toLocaleString()}} ~ {{new Date(sch.end).toLocaleTimeString()}}</div>
+          </v-ons-card>
+        </div>
+      </v-ons-card>
+
+      <v-ons-card>
+        <div class="title">지난 일정</div>
+        <div class="content">
+          <v-ons-card v-for="sch in this.doneSchedule" :key="sch">
+            <div>
+              {{sch.name}}
+              <!--              - {{ (sch.type === 'party') ? '(그룹피티)' : '(개인피티)' }}-->
+            </div>
+            <div>{{new Date(sch.start).toLocaleString()}} ~ {{new Date(sch.end).toLocaleTimeString()}}</div>
+          </v-ons-card>
+        </div>
+      </v-ons-card>
+    </div>
+
+    <div v-else-if="this.Auth.getters.isLogin === false">
       <br/>
       로그인 후 피티모아의 모든 서비스를 이용해 보세요!<br/>
       <router-link to="/signup">
@@ -113,16 +178,16 @@
               </tr>
               <tr>
                 <th scope="row">가격</th>
-                <td>{{ trainerDetail.pricePer }}원 / 1회</td>
+                <td>{{ Number(trainerDetail.pricePer).toLocaleString() }}원 / 1회</td>
               </tr>
               </tbody>
             </table>
 
+
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
-            <button type="button" class="btn btn-primary" @click="joinPartyCrew">참여하기</button>
-            <!--            <button v-show="this.Auth.isTrainer" type="button" class="btn btn-primary" @click="joinPartyCrew">협의하기</button>-->
+            <button type="button" class="btn btn-primary" @click="$ons.notification.alert('잠시 후 다시 시도해주세요.')">트레이너 후기작성</button>
           </div>
         </div>
       </div>
@@ -132,6 +197,8 @@
 
 <script>
 import {Party} from "@/api/party";
+import {Schedule} from "@/api/schedule";
+import {StringBitConverter} from "@/util/StringBitConverter";
 
 export default {
   name: "HomeView.vue",
@@ -139,21 +206,69 @@ export default {
     return {
       myPartyIn : null,
       trainerDetail : null,
+      comingSchedule : [],
+      doneSchedule : [],
     }
   },
   created() {
-    Party.fetchMyPartyIn().then(res => {
-      console.log(res);
-      if (res.status === 200) {
-        if (res.data.myParty != null)
-          this.myPartyIn = res.data.myParty;
-      }
-    });
+    console.log(process.env.VUE_APP_API_HOST)
+    if (this.Auth.getters.isUser) {
+      Party.fetchMyPartyIn().then(res => {
+        console.log(res);
+        if (res.status === 200) {
+          if (res.data.myParty != null)
+            this.myPartyIn = res.data.myParty;
+        }
+      });
+
+      Schedule.fetchMySchedule().then(
+          res => {
+            if (res.status === 200){
+              res.data.forEach(schedule => {
+                // console.info(schedule);
+                const now = new Date().getTime();
+                const start = new Date(schedule.start).getTime();
+                if (start > now){
+                  if (this.comingSchedule.length < 4)
+                    this.comingSchedule.push(schedule);
+                } else if (start < now){
+                  if (this.doneSchedule.length < 4)
+                    this.doneSchedule.push(schedule);
+                }
+              })
+            }
+          }
+      )
+
+    }
+    if (this.Auth.getters.isTrainer){
+      Schedule.fetchTrainerSchedule().then(
+          res => {
+            if (res.status === 200){
+              res.data.forEach(schedule => {
+                // console.info(schedule);
+                const now = new Date().getTime();
+                const start = new Date(schedule.start).getTime();
+                if (start > now){
+                  if (this.comingSchedule.length < 4)
+                    this.comingSchedule.push(schedule);
+                } else if (start < now){
+                  if (this.doneSchedule.length < 4)
+                    this.doneSchedule.push(schedule);
+                }
+              })
+            }
+          }
+      )
+    }
   },
   methods: {
-    // goToTrainerDetail(trainer) {
-    //
-    // }
+    bitToDay(bit) {
+      return StringBitConverter.bitToDay(bit);
+    },
+    bitToHour(bit){
+      return StringBitConverter.bitToHour(bit);
+    }
   }
 }
 </script>

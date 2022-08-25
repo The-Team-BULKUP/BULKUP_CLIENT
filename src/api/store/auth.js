@@ -2,8 +2,6 @@ import axios from 'axios';
 import Vuex from 'vuex';
 import createPersistedState from 'vuex-persistedstate';
 
-const HOST = process.env["API_HOST"] || "http://localhost:8080/api/v1";
-
 export const loginStore = new Vuex.Store({
     state: {
         username: '',
@@ -12,22 +10,26 @@ export const loginStore = new Vuex.Store({
         tokenExpired: '',
         realName: '',
         role: '',
+        uid: '',
     },
     getters: {
         isLogin(state) {
             return (state.accessToken !== '' && state.refreshToken !== '');
         },
         isUser(state) {
-            return (state.role.upperCase === 'USER');
+            return (state.role === 'USER');
         },
         isTrainer(state) {
-            return (state.role.upperCase === 'TRAINER');
+            return (state.role === 'TRAINER');
         },
         tokenExpired(state) {
             return state.tokenExpired;
         },
         realName(state) {
             return state.realName;
+        },
+        uid(state){
+            return state.uid;
         }
     },
     mutations: {
@@ -55,6 +57,7 @@ export const loginStore = new Vuex.Store({
             state.refreshToken = '';
             state.tokenExpired = '';
             state.realName = '';
+            state.role = '';
         }
     },
     actions: {
@@ -64,7 +67,7 @@ export const loginStore = new Vuex.Store({
             let result = false;
             let resultErr = null;
             try {
-                let res = await axios.post(HOST + "/login", memberInfo);
+                let res = await axios.post(process.env.VUE_APP_API_HOST  + "/login", memberInfo);
                 if (res.status === 200) {
                     console.log("로그인되었습니다.");
                     console.log(res.data);
@@ -106,7 +109,7 @@ export const loginStore = new Vuex.Store({
                         Authorization: this.state.accessToken,
                         REFRESH: this.state.refreshToken
                 }
-                let res = await axios.post(HOST + "/reissue", {}, {headers});
+                let res = await axios.post(process.env.VUE_APP_API_HOST + "/reissue", {}, {headers});
                 if (res.status === 200) {
                     console.log("재발행 완료");
                     commit('setAccessToken', res.data.token);
@@ -140,7 +143,7 @@ export const loginStore = new Vuex.Store({
         // 로그아웃합니다.
         doLogout({commit}) {
             commit('reset');
-            this.$router.go(-1);
+            this.$router.push("/");
         }
     },
     computed : {

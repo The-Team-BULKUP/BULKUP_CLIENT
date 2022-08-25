@@ -31,7 +31,7 @@
   <div v-else class="board_list_wrap">
     <table class="board_list">
       <tbody>
-      <tr v-for="trainer in trainerList" :key="trainer">
+      <tr v-for="trainer in trainerList" data-bs-toggle="modal" data-bs-target="#staticBackdrop"  @click="trainerDetail = trainer" :key="trainer">
         <td>
 <!--          <img class="profile_img" src="">-->
           <img id="trainer_profile" class="list-item__thumbnail" style="width:4rem !important; height: 5rem" :src="`data:image/png;base64,${trainer.profileImg}`" alt="trainer profile">
@@ -47,6 +47,48 @@
     </table>
   </div>
   </div>
+
+  <teleport to="body">
+    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h3 class="modal-title" id="staticBackdropLabel">{{ (!!trainerDetail) ? (trainerDetail.realName) : '' }} 트레이너</h3>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div v-if="!!trainerDetail" class="modal-body" style="text-align: -webkit-center;">
+            <div class="row col-12">
+              <img v-if="!!trainerDetail" :src="trainerDetail.gym.gymPhoto">
+            </div>
+            <table class="table">
+              <tbody>
+              <tr>
+                <th scope="row">소속 헬스장</th>
+                <td>{{ (trainerDetail.gym.gymName) }}</td>
+              </tr>
+              <tr>
+                <th scope="row">소개말</th>
+                <td style="white-space: pre-wrap;">{{trainerDetail.introduce}}</td>
+              </tr>
+              <tr>
+                <th scope="row">가격</th>
+                <td>{{ Number(trainerDetail.pricePer).toLocaleString() }}원 / 1회</td>
+              </tr>
+              </tbody>
+            </table>
+
+
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+            <button type="button" class="btn btn-primary" @click="askForTrainer(trainerDetail.id)">문의 하기</button>
+            <!--            <button v-show="this.Auth.isTrainer" type="button" class="btn btn-primary" @click="joinPartyCrew">협의하기</button>-->
+          </div>
+        </div>
+      </div>
+    </div>
+  </teleport>
+
 </template>
 
 <script>
@@ -63,6 +105,7 @@ export default {
         distance: 3000,
       },
       trainerList : [],
+      trainerDetail : null,
       isLoaded: false,
     }
   },
@@ -122,6 +165,10 @@ export default {
         }
       });
     },
+    askForTrainer(trainerId){
+      console.info(trainerId);
+      alert('채팅이랑 연결');
+    }
   },
 };
 </script>

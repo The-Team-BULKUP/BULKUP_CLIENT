@@ -73,6 +73,12 @@ const routes = [
 				name: "FindTrainer",
 				meta: {authRequired: true},
 				component: () => import("./view/FindTrainerView.vue")
+			},
+			{
+				path: "/editMyInfo",
+				name: "EditMyInfo",
+				meta: {authRequired: true},
+				component: () => import("./view/EditMyInfoView.vue")
 			}
 		]
 	},

@@ -17,9 +17,12 @@ import 'bootstrap-vue-3/dist/bootstrap-vue-3.css'
 import { createApp } from 'vue';
 import App from './App.vue';
 import VueOnsen from 'vue-onsenui'; // This imports 'onsenui', so no need to import it separately
+import html2canvas from "html2canvas";
 
 const app = createApp(App);
 app.config.globalProperties.Auth = Auth;
+app.config.globalProperties.html2canvas = html2canvas;
+
 
 import * as components from 'vue-onsenui/esm/components';
 import router from './router';
@@ -34,6 +37,7 @@ app.use(VueOnsen); // VueOnsen set here as plugin to VUE.
 app.use(router);
 app.use(SetupCalendar);
 app.use(BootstrapVue3);
+
 // eslint-disable-next-line
 app.component("Calendar", Calendar)
 // eslint-disable-next-line

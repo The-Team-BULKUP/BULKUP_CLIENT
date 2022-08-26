@@ -2,7 +2,7 @@
   <div class="padding-content">
     <br/>
     <div class="container">
-      <DatePicker :rows="1" is-expanded :attributes="attributes" style="min-width: 95% !important;" v-model="date"/>
+      <DatePicker id="cal" :rows="1" is-expanded :attributes="attributes" style="min-width: 95% !important;" v-model="date"/>
       <br/>
       <br/>
         <v-ons-card>
@@ -33,6 +33,7 @@
         </v-ons-card>
       <div style="float: right;">
         <b-button v-if="this.Auth.getters.isTrainer" data-bs-toggle="modal" data-bs-target="#staticBackdrop">일정추가</b-button>
+        <b-button v-else data-bs-toggle="modal" @click="getCalCanvas" data-bs-target="#staticBackdrop2">달력 공유</b-button>
       </div>
     </div>
   </div>
@@ -51,23 +52,23 @@
               <div ><label for="">어떤 일정인가요?</label></div>
               <br/>
               <div style="padding-left:0.5rem"><input type="radio" name="signup_type" value="party" v-model="request.type"> 회원수업
-              <input type="radio" name="signup_type" value="extra" v-model="request.type" style="margin-left: 1rem;"> 개인일정</div>
+                <input type="radio" name="signup_type" value="extra" v-model="request.type" style="margin-left: 1rem;"> 개인일정</div>
               <br/>
               <input type="text" class="form-control" v-model="request.name"  placeholder="일정명을 입력하세요.">
               <br/>
               <div v-if="request.type === 'party'">
                 <div class="row">
-                    <label for="">어떤 수업인가요?</label>
-                  </div>
-                    <v-ons-list>
-                      <v-ons-list-item>
-                          <v-ons-select v-if="myPartyListForTrainer !== undefined" v-model="request.partyId">
-                            <option v-for="(party, index) in myPartyListForTrainer" :key="party" :value="party.id" :selected="index === 0">
-                              {{ party.name }}
-                            </option>
-                          </v-ons-select>
-                      </v-ons-list-item>
-                    </v-ons-list>
+                  <label for="">어떤 수업인가요?</label>
+                </div>
+                <v-ons-list>
+                  <v-ons-list-item>
+                    <v-ons-select v-if="myPartyListForTrainer !== undefined" v-model="request.partyId">
+                      <option v-for="(party, index) in myPartyListForTrainer" :key="party" :value="party.id" :selected="index === 0">
+                        {{ party.name }}
+                      </option>
+                    </v-ons-select>
+                  </v-ons-list-item>
+                </v-ons-list>
               </div>
 
               <Date-picker v-model="modal.selectedDate" mode="dateTime" is24hr is-range class="container" show-caps>
@@ -82,9 +83,46 @@
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
             <button v-if="this.Auth.getters.isTrainer" type="button" class="btn btn-primary" @click="createScheduleForTrainer">일정 생성하기</button>
-<!--            <button type="button" class="btn btn-primary" @click="createScheduleForTrainer">일정 생성하기</button>-->
+            <!--            <button type="button" class="btn btn-primary" @click="createScheduleForTrainer">일정 생성하기</button>-->
             <button v-else type="button" class="btn btn-primary" @click="createScheduleForTrainer">회원</button>
-<!--            <button v-else-if="this.Auth.getters.isTrainer" type="button" class="btn btn-primary" @click="consultParty">일정 생성하기</button>-->
+            <!--            <button v-else-if="this.Auth.getters.isTrainer" type="button" class="btn btn-primary" @click="consultParty">일정 생성하기</button>-->
+          </div>
+        </div>
+      </div>
+    </div>
+  </teleport>
+
+
+
+
+
+
+  <teleport to="body">
+    <div class="modal fade" id="staticBackdrop2" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h3 class="modal-title" id="staticBackdropLabel">달력 공유</h3>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <div class="form-group" style="">
+
+              <div id="calCanvas">
+              </div>
+
+
+              <br/>
+
+            </div>
+
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+            <button v-if="this.Auth.getters.isTrainer" type="button" class="btn btn-primary" @click="createScheduleForTrainer">일정 생성하기</button>
+            <!--            <button type="button" class="btn btn-primary" @click="createScheduleForTrainer">일정 생성하기</button>-->
+            <button v-else type="button" class="btn btn-primary" @click="createScheduleForTrainer">회원</button>
+            <!--            <button v-else-if="this.Auth.getters.isTrainer" type="button" class="btn btn-primary" @click="consultParty">일정 생성하기</button>-->
           </div>
         </div>
       </div>
@@ -98,6 +136,7 @@
 import {Schedule} from "@/api/schedule";
 import {DateFormatUtil} from "@/util/DateFormatUtil";
 import $ons from "vue-onsenui";
+import html2canvas from "html2canvas";
 
 export default {
   name: "MainView",
@@ -247,7 +286,12 @@ export default {
             }
         )
       }
-    }
+    },
+    getCalCanvas(){
+      html2canvas(document.querySelector("#cal")).then(canvas => {
+        document.querySelector("#calCanvas").appendChild(canvas)
+      });
+    },
   },
   props: {
   }

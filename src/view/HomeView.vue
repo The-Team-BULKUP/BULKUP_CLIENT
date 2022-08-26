@@ -174,7 +174,7 @@
               </tr>
               <tr>
                 <th scope="row">트레이너 소개</th>
-                <td>{{trainerDetail.introduce}}</td>
+                <td style="white-space: pre-wrap;">{{trainerDetail.introduce}}</td>
               </tr>
               <tr>
                 <th scope="row">가격</th>

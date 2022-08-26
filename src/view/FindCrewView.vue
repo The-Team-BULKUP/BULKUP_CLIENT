@@ -218,7 +218,7 @@ export default {
             if (response == 1) {
               Party.joinPartyCrew(this.partyDetail.id).then(res => {
                 if (res.status === 204){
-                  $ons.notification.alert('참여에 성공하였습니다.');
+                  $ons.notification.alert('참여에 성공하였습니다. 곧 관리자에 의해 채팅방이 생성됩니다.');
                   this.$router.push({path: "/"});
                 }
               })
@@ -227,14 +227,13 @@ export default {
     },
 
     consultParty() {
-      //todo : 협의하기
-      $ons.notification.confirm('협의 하시겠습니까?')
+      $ons.notification.confirm('협의해보시겠습니까?')
           .then((response) => {
             if (response == 1) {
-              Party.consultParty(this.partyDetail.id).then(res => {
+              Party.joinPartyCrew(this.partyDetail.id).then(res => {
                 if (res.status === 204){
-                  $ons.notification.alert('채팅방을 확인해주세요!');
-                  this.$router.push({path: "/chat"});
+                  $ons.notification.alert('성공했습니다. 곧 관리자에 의해 채팅방에 초대됩니다.');
+                  this.$router.push({path: "/"});
                 }
               })
             }
